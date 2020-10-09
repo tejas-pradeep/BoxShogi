@@ -1,0 +1,594 @@
+{
+  "tests": [
+    {
+      "name": "basicCheck",
+      "setup": "",
+      "run": "./.github/run_test basicCheck",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "blockOutOfCheck",
+      "setup": "",
+      "run": "./.github/run_test blockOutOfCheck",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "capture",
+      "setup": "",
+      "run": "./.github/run_test capture",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "captureAndPromote",
+      "setup": "",
+      "run": "./.github/run_test captureAndPromote",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "captureDrop",
+      "setup": "",
+      "run": "./.github/run_test captureDrop",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "captureOutOfCheck",
+      "setup": "",
+      "run": "./.github/run_test captureOutOfCheck",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "checkmate",
+      "setup": "",
+      "run": "./.github/run_test checkmate",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "doubleCheck",
+      "setup": "",
+      "run": "./.github/run_test doubleCheck",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "doublePreviewDrop",
+      "setup": "",
+      "run": "./.github/run_test doublePreviewDrop",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "driveIllegalMove",
+      "setup": "",
+      "run": "./.github/run_test driveIllegalMove",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "driveMoves",
+      "setup": "",
+      "run": "./.github/run_test driveMoves",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "drivePromotion",
+      "setup": "",
+      "run": "./.github/run_test drivePromotion",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "drop",
+      "setup": "",
+      "run": "./.github/run_test drop",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "dropEmptyHand",
+      "setup": "",
+      "run": "./.github/run_test dropEmptyHand",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "dropOpponentsPiece",
+      "setup": "",
+      "run": "./.github/run_test dropOpponentsPiece",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "dropOutOfCheck",
+      "setup": "",
+      "run": "./.github/run_test dropOutOfCheck",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "dropWrongPiece",
+      "setup": "",
+      "run": "./.github/run_test dropWrongPiece",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "forcedPreviewPromotion",
+      "setup": "",
+      "run": "./.github/run_test forcedPreviewPromotion",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "governanceIllegalMove",
+      "setup": "",
+      "run": "./.github/run_test governanceIllegalMove",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "governanceMoves",
+      "setup": "",
+      "run": "./.github/run_test governanceMoves",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "governancePromotion",
+      "setup": "",
+      "run": "./.github/run_test governancePromotion",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "immediatePreviewDropMate",
+      "setup": "",
+      "run": "./.github/run_test immediatePreviewDropMate",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "initialMove",
+      "setup": "",
+      "run": "./.github/run_test initialMove",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "initialResponse",
+      "setup": "",
+      "run": "./.github/run_test initialResponse",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "loseOnLastMove",
+      "setup": "",
+      "run": "./.github/run_test loseOnLastMove",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "lowerIllegalPromotion",
+      "setup": "",
+      "run": "./.github/run_test lowerIllegalPromotion",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "lowerStuckPreviewDrop",
+      "setup": "",
+      "run": "./.github/run_test lowerStuckPreviewDrop",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "manyWaysOutOfCheck",
+      "setup": "",
+      "run": "./.github/run_test manyWaysOutOfCheck",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "mateWithDrop",
+      "setup": "",
+      "run": "./.github/run_test mateWithDrop",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "moveOutOfCheck",
+      "setup": "",
+      "run": "./.github/run_test moveOutOfCheck",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "movingIntoCheck",
+      "setup": "",
+      "run": "./.github/run_test movingIntoCheck",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "notesIllegalMove",
+      "setup": "",
+      "run": "./.github/run_test notesIllegalMove",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "notesMoves",
+      "setup": "",
+      "run": "./.github/run_test notesMoves",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "notesPromotion",
+      "setup": "",
+      "run": "./.github/run_test notesPromotion",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "occupiedDrop",
+      "setup": "",
+      "run": "./.github/run_test occupiedDrop",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "previewIllegalMove",
+      "setup": "",
+      "run": "./.github/run_test previewIllegalMove",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "previewPromotion",
+      "setup": "",
+      "run": "./.github/run_test previewPromotion",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "promoteLeavingZone",
+      "setup": "",
+      "run": "./.github/run_test promoteLeavingZone",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "promoteWithinZone",
+      "setup": "",
+      "run": "./.github/run_test promoteWithinZone",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "promotedCaptureDrop",
+      "setup": "",
+      "run": "./.github/run_test promotedCaptureDrop",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "promotedGovernanceIllegalMove",
+      "setup": "",
+      "run": "./.github/run_test promotedGovernanceIllegalMove",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "promotedGovernanceMoves",
+      "setup": "",
+      "run": "./.github/run_test promotedGovernanceMoves",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "promotedNotesIllegalMove",
+      "setup": "",
+      "run": "./.github/run_test promotedNotesIllegalMove",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "promotedNotesMoves",
+      "setup": "",
+      "run": "./.github/run_test promotedNotesMoves",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "promotedPreviewIllegalMove",
+      "setup": "",
+      "run": "./.github/run_test promotedPreviewIllegalMove",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "promotedPreviewMoves",
+      "setup": "",
+      "run": "./.github/run_test promotedPreviewMoves",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "promotedRelayIllegalMove",
+      "setup": "",
+      "run": "./.github/run_test promotedRelayIllegalMove",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "promotedRelayMoves",
+      "setup": "",
+      "run": "./.github/run_test promotedRelayMoves",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "promotedRelayPromotion",
+      "setup": "",
+      "run": "./.github/run_test promotedRelayPromotion",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "relayIllegalMove",
+      "setup": "",
+      "run": "./.github/run_test relayIllegalMove",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "relayMoves",
+      "setup": "",
+      "run": "./.github/run_test relayMoves",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "relayPromotion",
+      "setup": "",
+      "run": "./.github/run_test relayPromotion",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "shieldIllegalMove",
+      "setup": "",
+      "run": "./.github/run_test shieldIllegalMove",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "shieldMoves",
+      "setup": "",
+      "run": "./.github/run_test shieldMoves",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "shieldPromotion",
+      "setup": "",
+      "run": "./.github/run_test shieldPromotion",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "tieGame",
+      "setup": "",
+      "run": "./.github/run_test tieGame",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+      "name": "upperIllegalPromotion",
+      "setup": "",
+      "run": "./.github/run_test upperIllegalPromotion",
+      "input": "",
+      "output": "",
+      "comparison": "included",
+      "timeout": 10,
+      "points": 1
+    },
+    {
+     "name": "upperStuckPreviewDrop",
+     "setup": "",
+     "run": "./.github/run_test upperStuckPreviewDrop",
+     "input": "",
+     "output": "",
+     "comparison": "included",
+     "timeout": 10,
+     "points": 1
+    },
+    {
+     "name": "winOnLastMove",
+     "setup": "",
+     "run": "./.github/run_test winOnLastMove",
+     "input": "",
+     "output": "",
+     "comparison": "included",
+     "timeout": 10,
+     "points": 1
+    }
+  ]
+}

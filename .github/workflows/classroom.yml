@@ -1,0 +1,17 @@
+    name: GitHub Classroom Workflow
+
+    on: [push]
+
+    jobs:
+      build:
+        name: Autograding
+        runs-on: ubuntu-latest
+        steps:
+          - name: Install icdiff library
+            run: sudo apt-get install icdiff
+          - name: Checkout code
+            uses: actions/checkout@v2
+          - name: Grant permission to testing script
+            run: sudo chmod a+x ./.github/run_test
+          - name: Run tests
+            uses: education/autograding@v1
