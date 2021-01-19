@@ -83,8 +83,8 @@ This year we are including an option to code this project online on Repl.it. Thi
 - You can create an account using your Github login
 
 #### Setup Repl.it
-- Copy and paste your invitation link (i.e. https://classroom.github.com/a/WN7-oCer) sent in the invitation email in a new tab 
-- Then click on the <img src="./media/work_in_repl.png" width="80" height="25" /> button at the top of this README. You will be redirected to your repo in Repl.
+- Copy and paste your invitation link (i.e. https://classroom.github.com/a/xKI5jjjJ) sent in the invitation email in a new tab 
+- Then click on the <img src="./media/work_in_repl.png" width="80" height="25" /> button in the assignment page you just opened. You will be redirected to your repo in Repl.
 - Once redirected, you can write code and run tests.
 - Tests can be run by pressing the green `Run` button at the top of REPL. If the button doesn't show up, refresh the page.
 - **Common Issues**
