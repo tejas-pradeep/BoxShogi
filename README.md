@@ -20,7 +20,7 @@ Listed below is how to setup your coding environment and begin coding under [Get
 
 ## Getting Started
 
-When you accepted the assignment, this Github repo was created. This is where your assignment code will reside. This is what will be viewed and graded by us. Anytime code is pushed to this repo our autograder is run. **You will ultimately be graded on passing the tests run by the autograder.** You can view the autograder results by clicking on the <img src="./media/autograder_check.png" width="25" height="25" />, <img src="./media/autograder_x.png" width="25" height="25" /> or <img src="./media/autograder_dot.png" width="25" height="25" /> next to the most recent commit hash. You must add a commit before you see this. This is shown below.
+When you accepted the assignment, this Github repo was created. This is where your assignment code will reside. This is what will be viewed and graded by us. Anytime code is pushed to this repo our autograder is run. **You will ultimately be graded on passing the tests run by the autograder. This is stricter than the local test runner we provide.** You can view the autograder results by clicking on the <img src="./media/autograder_check.png" width="25" height="25" />, <img src="./media/autograder_x.png" width="25" height="25" /> or <img src="./media/autograder_dot.png" width="25" height="25" /> next to the most recent commit hash. You must add a commit before you see this. This is shown below.
 
 ![](media/autograder.gif)
 
@@ -83,7 +83,7 @@ This year we are including an option to code this project online on Repl.it. Thi
 - You can create an account using your Github login
 
 #### Setup Repl.it
-- Copy and paster your invitation link in a new tab 
+- Copy and paste your invitation link (example: https://classroom.github.com/a/WN7-oCer) sent in the invitation email in a new tab 
 - Then click on the <img src="./media/work_in_repl.png" width="80" height="25" /> button at the top of this README. You will be redirected to your repo in Repl.
 - Once redirected, you can write code and run tests.
 - Tests can be run by pressing the green `Run` button at the top of REPL. If the button doesn't show up, refresh the page.
