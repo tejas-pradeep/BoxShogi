@@ -3,6 +3,6 @@
 python3 boxshogi.py -f ./test_cases/$1.in | diff -s  - ./test_cases/$1.out -i -w -B > /dev/null
 if [ $? -eq 1 ]
 then
-    python3 boxshogi.py -f ./test_cases/$1.in | colordiff -y <(echo Your Output; cat /dev/stdin) <(echo Expected Output; cat $1.out)
+    python3 boxshogi.py -f ./test_cases/$1.in | colordiff -y <(echo Your Output; cat /dev/stdin) <(echo Expected Output; cat ./test_cases/$1.out)
     exit 1
 fi
