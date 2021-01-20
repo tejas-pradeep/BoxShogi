@@ -111,7 +111,7 @@ Once you have made your changes in Repl.it, you should push the changes to Githu
 ![](media/code_with_repl.gif)
 
 #### Access Repl in the future
-To access your code in Repl after setting up, you can **login** to Repl and click on **My repls**, and click on your project as shown below
+To access your code in Repl after setting up, you can **login** to Repl, click on **My repls**, and click on your project as shown below
 
 ![](media/access_repl.png)
 
