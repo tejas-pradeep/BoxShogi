@@ -9,8 +9,7 @@ def main():
         input = parseTestCase(sys.argv[2])
         # Prints example output
         print(
-"""
-UPPER player action: drop s d1
+"""UPPER player action: drop s d1
 5 |__|__| R|__| D|
 4 |__|__|__|__|__|
 3 |__|__|__|__|__|
@@ -21,8 +20,7 @@ UPPER player action: drop s d1
 Captures UPPER: S R P
 Captures lower: p n g s
 
-lower player wins.  Illegal move.
-""")
+lower player wins.  Illegal move.""")
 
     if sys.argv[1] == '-i':
         pass
