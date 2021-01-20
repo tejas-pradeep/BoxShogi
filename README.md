@@ -85,19 +85,20 @@ Repl.it is an online coding environment where you can write code and run tests.
 
 This year we are including an option to code this project online on Repl.it. This is **beta** program because this is new for us as well as Repl and Github. You can follow the steps below to setup Repl.it and push your code to Github. We also welcome any questions or feedback you may have regarding this option at internship-take-home@box.com.
 
-For more detailed setup instructions, FAQ's and common issues than what is below, view the box note https://cloud.box.com/s/bia73zsj70zwrlalvl7la9yup6qpglyr.
+**For more detailed setup instructions, FAQ's and common issues than what is below, view the box note https://cloud.box.com/s/bia73zsj70zwrlalvl7la9yup6qpglyr**.
 
 #### Create/Sign into a Repl.it Account
 - Go to Repl's sign up [page](https://repl.it/signup) and sign up if don't you have an account or login if you already have one linked to your Github
 - You **must** create an account using your Github login
 
 #### Setup Repl.it
-- Open this link https://classroom.github.com/a/xKI5jjjJ in a new tab 
+- Open this link https://classroom.github.com/a/ZLSMcNsc in a new tab 
 - Then click on the <img src="./media/work_in_repl.png" width="80" height="25" /> button in the assignment page you just opened. You will be redirected to your repo in Repl.
 - Once redirected, you can write code and run tests.
 - Tests can be run by pressing the green `Run` button at the top of REPL. If the button doesn't show up, refresh the page.
 - **Common Issues**
     - **Not redirected to your Repl** - You must be logged into Repl in the browser you use to open your repo
+    - View FAQs and issues here https://cloud.box.com/s/bia73zsj70zwrlalvl7la9yup6qpglyr
 
 ![](media/setup_repl.gif)
 
