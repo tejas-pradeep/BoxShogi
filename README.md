@@ -59,7 +59,7 @@ The test runner and test cases can be found in the `test_runners` and `test_case
 
 ##### Running the test runner
 - To invoke the test runner, navigate to this repo in your terminal and execute the version for your operating system from the project root directory. e.g. `./test_runners/test-runner-mac`, or on Windows, `cmd /K ./test_runners/test-runner-windows.exe`
-- **Notes:**
+- **Notes**
   - On windows, pass the `/K` option to keep the runner open after execution
   - Make sure the runner is executable via the terminal by running `chmod a+x ./test_runners/test-runner-mac` or `chmod a+x ./test_runners/test-runner-linux`. On Windows, right click the file and navigate the `properties` menu
 
@@ -110,7 +110,7 @@ Once you have made your changes in Repl.it, you should push the changes to Githu
 
 ![](media/code_with_repl.gif)
 
-#### Access Repl in the future
+#### Access Repl.it in the future
 To access your code in Repl after setting up, you can **login** to Repl, click on **My repls**, and click on your project as shown below
 
 ![](media/access_repl.png)
