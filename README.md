@@ -58,10 +58,10 @@ The test runner is provided as a binary, and supports macOS, Windows 10, and Ubu
 The test runner and test cases can be found in the `test_runners` and `test_cases` folder respectively.
 
 ##### Running the test runner
-- To invoke the test runner, navigate to this repo in your terminal and execute the version for your operating system. e.g. `./test_runners/test-runner-mac`, or on Windows, `cmd /K ./test_runners/test-runner-windows.exe`
-**Notes:**
-- On windows, pass the `/K` option to keep the runner open after execution
-- Make sure the runner is executable via the terminal by running `chmod a+x ./test_runners/test-runner-mac` or `chmod a+x ./test_runners/test-runner-linux`. On Windows, right click the file and navigate the `properties` menu
+- To invoke the test runner, navigate to this repo in your terminal and execute the version for your operating system from the project root directory. e.g. `./test_runners/test-runner-mac`, or on Windows, `cmd /K ./test_runners/test-runner-windows.exe`
+- **Notes:**
+  - On windows, pass the `/K` option to keep the runner open after execution
+  - Make sure the runner is executable via the terminal by running `chmod a+x ./test_runners/test-runner-mac` or `chmod a+x ./test_runners/test-runner-linux`. On Windows, right click the file and navigate the `properties` menu
 
 ##### Supported flags
 `-r` reset: this resets the `.command` file in case the path/way you run your program in file mode changes.
