@@ -92,7 +92,7 @@ For more detailed setup instructions, FAQ's and common issues than what is below
 - You **must** create an account using your Github login
 
 #### Setup Repl.it
-- Open this link https://classroom.github.com/a/ZLSMcNsc in a new tab 
+- Open this link https://classroom.github.com/a/xKI5jjjJ in a new tab 
 - Then click on the <img src="./media/work_in_repl.png" width="80" height="25" /> button in the assignment page you just opened. You will be redirected to your repo in Repl.
 - Once redirected, you can write code and run tests.
 - Tests can be run by pressing the green `Run` button at the top of REPL. If the button doesn't show up, refresh the page.
