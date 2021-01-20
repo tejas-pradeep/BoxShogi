@@ -1,4 +1,9 @@
 # BoxShogi Specification
+
+We're excited for you to get started on this take home assignment! Below you will find all the information needed to get set up and start coding away! Throughout the two weeks we will invite you to office hours. These are a great way for you to learn more about the assignment as well as Box, and get your questions answered directly from our engineers. You will be invited to four virtual office hours (look out for Google Calendar invites and a Zoom link!) More details can be found [here](https://cloud.box.com/s/dbblapdi6r1s35ogd364vjxoenvr17or). 
+
+Please feel free to reach out anytime to our team at internship-take-home@box.com, whether you have questions/concerns about the assignment or just want to learn more about Box.
+
 Listed below is how to setup your coding environment and begin coding under [Getting Started](#getting-started), the game specification under [Game Rules](#game-rules) and finally the expected game interface under [Game Interface](#game-interface). We recommend reading the games rules and understanding the game interface before you begin coding.
 
 - [Getting Started](#getting-started)
@@ -20,7 +25,7 @@ Listed below is how to setup your coding environment and begin coding under [Get
 
 ## Getting Started
 
-When you accepted the assignment, this Github repo was created. This is where your assignment code will reside. This is what will be viewed and graded by us. Anytime code is pushed to this repo our autograder is run. **You will ultimately be graded on passing the tests run by the autograder. This is stricter than the local test runner we provide.** You can view the autograder results by clicking on the <img src="./media/autograder_check.png" width="25" height="25" />, <img src="./media/autograder_x.png" width="25" height="25" /> or <img src="./media/autograder_dot.png" width="25" height="25" /> next to the most recent commit hash. You must add a commit before you see this. This is shown below.
+When you accepted the assignment, this Github repo was created. This is where your assignment code will reside. This is what will be viewed and graded by us. Anytime code is pushed to this repo our autograder is run. **You will ultimately be graded on passing the tests run by the autograder. This is stricter than the local test runner we provide. So passing the tests locally doesn't guarantee passing the autograder.** You can view the autograder results by clicking on the <img src="./media/autograder_check.png" width="25" height="25" />, <img src="./media/autograder_x.png" width="25" height="25" /> or <img src="./media/autograder_dot.png" width="25" height="25" /> next to the most recent commit hash. You must add a commit before you see this. This is shown below.
 
 ![](media/autograder.gif)
 
@@ -30,7 +35,7 @@ You can work on this project locally on your desktop or online on Repl.it.
 
 ### Working on your Desktop
 
-To begin the assignment, you need to first clone your repo to your desktop running the command below in your terminal.
+To begin the assignment, you need to first clone your repo to your desktop by running the command below in your terminal after replacing `<your-github-username>`  with your Github username. 
 
 ```
 $ git clone https://github.com/Box-Internship-Assignment/box-take-home-python-<your-github-username>.git
@@ -59,10 +64,13 @@ The test runner and test cases can be found in the `test_runners` and `test_case
 - Make sure the runner is executable via the terminal by running `chmod a+x ./test_runners/test-runner-mac` or `chmod a+x ./test_runners/test-runner-linux`. On Windows, right click the file and navigate the `properties` menu
 
 ##### Supported flags
-`-r` reset: this resets the `.command` file in case the path/way you run your program in file mode changes
-`-v` verbose: this will print out the difference in the expected output and actual output of failed tests, along with an explanation of the differences/errors
-`-f` filter: filters test cases based on a string. e.g. `./test_runners/test-runner-mac -f "governance"` will run tests that have governance in their name.
-    **Note:** If using windows, make sure to use double quotes "" or no quotes. Single quotes will not work.
+`-r` reset: this resets the `.command` file in case the path/way you run your program in file mode changes.
+
+`-v` verbose: this will print out the difference in the expected output and actual output of failed tests, along with an explanation of the differences/errors.
+
+`-f` filter: filters test cases based on a string. e.g. `./test_runners/test-runner-mac -f "governance"` will run tests that have governance in their name.  
+    **Note:** If using windows, make sure to use double quotes "" or no quotes. Single quotes will not work.  
+    
 `-b` break: stops execution of tests after the first encountered failure
 
 **Note:** You can combine flags, although if you're using the filter flag, the filter string must be right after. For example, both of these would work equivalently:
@@ -77,13 +85,14 @@ Repl.it is an online coding environment where you can write code and run tests.
 
 This year we are including an option to code this project online on Repl.it. This is **beta** program because this is new for us as well as Repl and Github. You can follow the steps below to setup Repl.it and push your code to Github. We also welcome any questions or feedback you may have regarding this option at internship-take-home@box.com.
 
+For more detailed setup instructions, FAQ's and common issues than what is below, view the box note https://cloud.box.com/s/bia73zsj70zwrlalvl7la9yup6qpglyr.
 
 #### Create/Sign into a Repl.it Account
-- Go to Repl's sign up [page](https://repl.it/signup) and sign up if don't you have an account or login if you already have one
-- You can create an account using your Github login
+- Go to Repl's sign up [page](https://repl.it/signup) and sign up if don't you have an account or login if you already have one linked to your Github
+- You **must** create an account using your Github login
 
 #### Setup Repl.it
-- Copy and paste your invitation link (i.e. https://classroom.github.com/a/xKI5jjjJ) sent in the invitation email in a new tab 
+- Open this link https://classroom.github.com/a/ZLSMcNsc in a new tab 
 - Then click on the <img src="./media/work_in_repl.png" width="80" height="25" /> button in the assignment page you just opened. You will be redirected to your repo in Repl.
 - Once redirected, you can write code and run tests.
 - Tests can be run by pressing the green `Run` button at the top of REPL. If the button doesn't show up, refresh the page.
