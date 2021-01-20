@@ -79,7 +79,7 @@ The test runner and test cases can be found in the `test_runners` and `test_case
 
 Note: the test cases aren't completely exhaustive — there are too many variations of illegal moves for creating a totally exhaustive set to be feasible — but for the purposes of evaluating your solution, you don't need to consider anything not covered by the provided test cases.
 
-### Working on Repl (Beta)
+### Working on Repl.it (Beta)
 
 Repl.it is an online coding environment where you can write code and run tests. 
 
