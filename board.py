@@ -1,4 +1,5 @@
 import os
+BOARD_SIZE = 5
 
 
 class Board:
@@ -10,11 +11,31 @@ class Board:
     BOARD_SIZE = 5
 
     def __init__(self):
+        self.upper_pieces = dict()
+        self.lower_pieces = dict()
         self._board = self._initEmptyBoard()
 
     def _initEmptyBoard(self):
-        # TODO: Initalize empty board
-        pass
+        lower = dict()
+        upper = dict()
+        board = [['' for i in range(BOARD_SIZE) for j in range(BOARD_SIZE)]]
+        board[0][0] = 'k'
+        board[1][0] = 'g'
+        board[2][0] = 's'
+        board[3][0] = 'b'
+        board[4][0] = 'r'
+        board[0][1] = 'p'
+
+        board[0][4] = 'K'
+        board[1][4] = 'G'
+        board[2][4] = 'S'
+        board[3][4] = 'B'
+        board[4][4] = 'R'
+        board[4][3] = 'P'
+
+        upper = {'K': 'a5', 'G': 'b5', 'S': 'c5', 'B': 'd5', 'R': 'e5', 'P': 'e4'}
+        lower = {'k': 'a1', 'g': 'b1', 's': 'c1', 'b': 'd1', 'r': 'e1', 'p': 'a2'}
+
 
     def __repr__(self):
         return self._stringifyBoard()
