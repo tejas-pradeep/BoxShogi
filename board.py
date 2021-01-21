@@ -15,6 +15,12 @@ class Board:
         self.lower_pieces = dict()
         self._board = self._initEmptyBoard()
 
+    def set_lower(self, lower_dict):
+        self.lower_pieces = lower_dict
+
+    def set_upper(self, upper_dict):
+        self.upper_pieces = upper_dict
+
     def _initEmptyBoard(self):
         lower = dict()
         upper = dict()
@@ -35,6 +41,13 @@ class Board:
 
         upper = {'K': 'a5', 'G': 'b5', 'S': 'c5', 'B': 'd5', 'R': 'e5', 'P': 'e4'}
         lower = {'k': 'a1', 'g': 'b1', 's': 'c1', 'b': 'd1', 'r': 'e1', 'p': 'a2'}
+        self.set_lower(lower)
+        self.set_upper(upper)
+        return board
+
+    def clear_pieces(self):
+        self.lower_pieces = dict()
+        self.upper_pieces = dict()
 
 
     def __repr__(self):
