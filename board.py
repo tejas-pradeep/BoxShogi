@@ -10,10 +10,13 @@ class Board:
     # The BoxShogi board is 5x5
     BOARD_SIZE = 5
 
-    def __init__(self):
+    def __init__(self, game_mode):
         self.upper_pieces = dict()
         self.lower_pieces = dict()
-        self._board = self._initEmptyBoard()
+        if game_mode == 'f':
+            pass
+        else:
+            self._board = self._initEmptyBoard()
 
     def set_lower(self, lower_dict):
         self.lower_pieces = lower_dict
