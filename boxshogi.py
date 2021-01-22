@@ -1,6 +1,10 @@
 import sys
-from utils import parseTestCase
+from .utils import parseTestCase
+from .game import Game
 
+def game(game_mode = 'i'):
+    game = Game(game_mode)
+    game_end = False
 def main():
     """
     Main function to read terminal input
@@ -21,9 +25,10 @@ Captures UPPER: S R P
 Captures lower: p n g s
 
 lower player wins.  Illegal move.""")
+        game('f')
 
     if sys.argv[1] == '-i':
-        pass
+        game('i')
 
 if __name__ == "__main__":
     main()
