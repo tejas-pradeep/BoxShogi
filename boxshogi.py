@@ -1,10 +1,13 @@
 import sys
-from .utils import parseTestCase
+from .utils import *
 from .game import Game
 
 def game(game_mode = 'i'):
     game = Game(game_mode)
     game_end = False
+    while not game_end:
+        command = input()
+        instruction = getMove(command)
 def main():
     """
     Main function to read terminal input

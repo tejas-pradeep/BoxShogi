@@ -54,7 +54,7 @@ class Board:
         self.lower_pieces = dict()
         self.upper_pieces = dict()
 
-    def getPeice(self, location):
+    def getPiece(self, location):
         """
         Method to get the piece at location
         :param location: string of length 2 of the form like a3

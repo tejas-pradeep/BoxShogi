@@ -1,3 +1,5 @@
+from .exceptions import PositionOutofBoundsException, MoveException
+
 def parseTestCase(path):
     """
     Utility function to help parse test cases.
@@ -31,20 +33,24 @@ def location_to_index(location):
     :return: a tuple containing (row, column) indices.
     """
     if len(location) != 2:
-        return -1, -1, "Position has a length greater than 2"
+       raise PositionOutofBoundsException("Position has a length greater than 2")
     col = int(location[1])
     if col < 1 or col > 5:
-        return -1, -1, "Invalid location, square {} does not exist".format(location)
+        raise PositionOutofBoundsException("Invalid location, square {} does not exist".format(location))
     row = ord(location[0].lower()) - 97
     if row < 0 or row > 4:
-        return -1, -1, "Invalid location, square {} does not exist".format(location)
+        raise PositionOutofBoundsException("Invalid location, square {} does not exist".format(location))
     return row, col - 1
 
 
 def checkBounds(origin, dest):
-    o = location_to_index(origin)
-    d = location_to_index(dest)
-    return 5 > o[0] >= 0 and 5 > o[1] >= 0 and 5 > d[0] >= 0 and 5 > d[1] >= 0
+    try:
+        o = location_to_index(origin)
+        d = location_to_index(dest)
+        return 5 > o[0] >= 0 and 5 > o[1] >= 0 and 5 > d[0] >= 0 and 5 > d[1] >= 0
+    except PositionOutofBoundsException:
+        return False
+
 
 def getMove(command):
     move = command.strip().split()
@@ -56,6 +62,11 @@ def getMove(command):
             origin, dest = move[1:]
         elif move[0] == 'drop':
             cmd, origin, dest = move
+        else:
+            raise MoveException("Command does not have a valid move")
     return returnTuple
+
+def sameTeam(str1, str2):
+    return (str1.isLower() and str2.isLower()) or (str1.isUpper() and str2.isUpper())
 
 
