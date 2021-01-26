@@ -23,6 +23,7 @@ def parseTestCase(path):
 
     return dict(initialPieces=initialBoardState, upperCaptures=upperCaptures, lowerCaptures=lowerCaptures, moves=moves)
 
+
 def location_to_index(location):
     """
     Util method to convert some location on the board, a3 to its index values in the square board matrix
@@ -40,5 +41,7 @@ def location_to_index(location):
     return row, col - 1
 
 
-
-
+def checkBounds(origin, dest):
+    o = location_to_index(origin)
+    d = location_to_index(dest)
+    return 5 > o[0] >= 0 and 5 > o[1] >= 0 and 5 > d[0] >= 0 and 5 > d[1] >= 0
