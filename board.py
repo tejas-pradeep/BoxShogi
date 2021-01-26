@@ -1,4 +1,5 @@
 import os
+from utils import *
 BOARD_SIZE = 5
 
 
@@ -13,10 +14,11 @@ class Board:
     def __init__(self, game_mode):
         self.upper_pieces = dict()
         self.lower_pieces = dict()
+        self.pieces = ['k', 'g', 's', 'b', 'r']
         if game_mode == 'f':
             pass
         else:
-            self._board = self._initEmptyBoard()
+            self.board = self._initEmptyBoard()
 
     def set_lower(self, lower_dict):
         self.lower_pieces = lower_dict
@@ -51,6 +53,21 @@ class Board:
     def clear_pieces(self):
         self.lower_pieces = dict()
         self.upper_pieces = dict()
+
+    def getPeice(self, location):
+        """
+        Method to get the piece at location
+        :param location: string of length 2 of the form like a3
+        :return: piece string, example p or P
+        """
+        row, col = location_to_index(location)
+        for p in self.pieces:
+            if self.board[row][col] == p.lower():
+                return p.lower()
+            if self.board[row][col] == p.upper():
+                return p.upper()
+        return None
+
 
 
     def __repr__(self):
