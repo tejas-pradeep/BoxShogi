@@ -1,4 +1,5 @@
 from .board import Board
+from .utils import *
 class Game:
 
     def __init__(self, game_mode = 'i'):
@@ -7,3 +8,4 @@ class Game:
 
         """
         self.board = Board(game_mode)
+

@@ -45,3 +45,17 @@ def checkBounds(origin, dest):
     o = location_to_index(origin)
     d = location_to_index(dest)
     return 5 > o[0] >= 0 and 5 > o[1] >= 0 and 5 > d[0] >= 0 and 5 > d[1] >= 0
+
+def getMove(command):
+    move = command.strip().split()
+    returnTuple = (cmd, origin, dest, promote) = "move", "", "", ""
+    if len(move) == 4:
+        origin, dest, promote = move[1:]
+    elif len(move) == 3:
+        if move[0] == 'move':
+            origin, dest = move[1:]
+        elif move[0] == 'drop':
+            cmd, origin, dest = move
+    return returnTuple
+
+
