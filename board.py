@@ -18,7 +18,7 @@ class Board:
         if game_mode == 'f':
             pass
         else:
-            self.board = self._initEmptyBoard()
+            self._board = self._initEmptyBoard()
 
     def set_lower(self, lower_dict):
         self.lower_pieces = lower_dict
@@ -29,23 +29,24 @@ class Board:
     def _initEmptyBoard(self):
         lower = dict()
         upper = dict()
-        board = [['' for i in range(BOARD_SIZE) for j in range(BOARD_SIZE)]]
-        board[0][0] = 'k'
-        board[1][0] = 'g'
-        board[2][0] = 's'
-        board[3][0] = 'b'
-        board[4][0] = 'r'
+        board = [['' for i in range(5)] for j in range(5)]
+        print(board)
+        board[0][0] = 'd'
+        board[1][0] = 's'
+        board[2][0] = 'r'
+        board[3][0] = 'g'
+        board[4][0] = 'n'
         board[0][1] = 'p'
 
-        board[0][4] = 'K'
+        board[0][4] = 'N'
         board[1][4] = 'G'
-        board[2][4] = 'S'
-        board[3][4] = 'B'
-        board[4][4] = 'R'
+        board[2][4] = 'R'
+        board[3][4] = 'S'
+        board[4][4] = 'D'
         board[4][3] = 'P'
 
-        upper = {'K': 'a5', 'G': 'b5', 'S': 'c5', 'B': 'd5', 'R': 'e5', 'P': 'e4'}
-        lower = {'k': 'a1', 'g': 'b1', 's': 'c1', 'b': 'd1', 'r': 'e1', 'p': 'a2'}
+        upper = {'D': 'e5', 'G': 'b5', 'R': 'c5', 'S': 'd5', 'N': 'a5', 'P': 'e4'}
+        lower = {'d': 'a1', 's': 'b1', 'r': 'c1', 'g': 'd1', 'n': 'e1', 'p': 'a2'}
         self.set_lower(lower)
         self.set_upper(upper)
         return board
@@ -62,9 +63,9 @@ class Board:
         """
         row, col = location_to_index(location)
         for p in self.pieces:
-            if self.board[row][col] == p.lower():
+            if self._board[row][col] == p.lower():
                 return p.lower()
-            if self.board[row][col] == p.upper():
+            if self._board[row][col] == p.upper():
                 return p.upper()
         return None
 
