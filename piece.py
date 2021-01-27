@@ -41,7 +41,7 @@ class Drive(Piece):
         directions = [-1, 0, 1]
         for i in directions:
             for j in directions:
-                if not(1 == 0 and j == 0):
+                if not(i == 0 and j == 0) and 0 <= self.x + i < 5 and 0 <= self.y + i < 5:
                     moves.add((self.x + i, self.y + j))
         moves = list(moves)
         self.moves = moves
@@ -69,7 +69,7 @@ class Notes(Piece):
             directions = [-1, 0, 1]
             for i in directions:
                 for j in directions:
-                    if not (1 == 0 and j == 0):
+                    if not (i == 0 and j == 0) and 0 <= self.x + i < 5 and 0 <= self.y + i < 5:
                         moves.add((self.x + i, self.y + j))
         moves = list(moves)
         self.moves = moves
@@ -99,12 +99,86 @@ class Governanace(Piece):
             directions = [-1, 0, 1]
             for i in directions:
                 for j in directions:
-                    if not (1 == 0 and j == 0):
+                    if not (i == 0 and j == 0) and 0 <= self.x + i < 5 and 0 <= self.y + i < 5:
                         moves.add((self.x + i, self.y + j))
         self.moves = list(moves)
 
     def getMoves(self):
         return self.moves
+
+    def promote(self):
+        self.isPromote = True
+
+class Shield(Piece):
+    def __init__(self, player_type, index):
+        super(Shield, self).__init__(player_type, index)
+
+    def updateMoves(self):
+        moves = set()
+        directions = [-1, 0, 1]
+        for i in directions:
+            for j in directions:
+                if i != 0 or j != 0 and 0 <= self.x + i < 5 and 0 <= self.y + i < 5:
+                    if (i, j) != (-1, -1) and (i, j) != (1, -1):
+                        moves.add((self.x + i, self.y + j))
+        self.moves = list(moves)
+    def getMoves(self):
+        return self.moves
+
+class Relay(Piece):
+    def __init__(self, player_type, index):
+        super(Relay, self).__init__(player_type, index)
+
+    def updateMoves(self):
+        moves = set()
+        if self.isPromote:
+            directions = [-1, 0, 1]
+            for i in directions:
+                for j in directions:
+                    if i != 0 or j != 0 and 0 <= self.x + i < 5 and 0 <= self.y + i < 5:
+                        if (i, j) != (-1, -1) and (i, j) != (1, -1):
+                            moves.add((self.x + i, self.y + j))
+        else:
+            banned_list = [(-1, 0), (1, 0), (0, -1)]
+            directions = [-1, 0, 1]
+            for i in directions:
+                for j in directions:
+                    if i != 0 or j != 0 and 0 <= self.x + i < 5 and 0 <= self.y + i < 5:
+                        if (i, j) not in banned_list:
+                            moves.add((self.x + i, self.y + j))
+        self.moves = list(moves)
+
+    def getMoves(self):
+        return self.moves
+
+    def promote(self):
+        self.isPromote = True
+
+class Preview(Piece):
+    def __init__(self, player_type, index):
+        super(Preview, self).__init__(player_type, index)
+    def updateMoves(self):
+        if self.isPromote:
+            moves = set()
+            directions = [-1, 0, 1]
+            for i in directions:
+                for j in directions:
+                    if i != 0 or j != 0 and 0 <= self.x + i < 5 and 0 <= self.y + i < 5:
+                        if (i, j) != (-1, -1) and (i, j) != (1, -1):
+                            moves.add((self.x + i, self.y + j))
+            self.moves = list(moves)
+        else:
+            if self.y + 1 < 5:
+                self.moves = [self.y + 1]
+    def getMoves(self):
+        return self.moves
+    def promote(self):
+        self.isPromote = True
+
+
+
+
+
 
 
 
