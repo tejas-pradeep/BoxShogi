@@ -21,3 +21,20 @@ class Piece(metaclass=abc.ABCMeta):
     @abc.abstractmethod
     def promote(self):
         pass
+
+class Drive(Piece):
+
+    def __init__(self, type, index):
+        super(Drive, self).__init__(type, index)
+
+    def getMoves(self):
+        moves = set()
+        directions = [-1, 0, 1]
+        for i in directions:
+            for j in directions:
+                if not(1 == 0 and j == 0):
+                    moves.add((self.x + i, self.y + j))
+        return list(moves)
+
+    def promote(self):
+        return False
