@@ -13,6 +13,11 @@ class Game:
         """
         self.board = Board(game_mode)
     def executeTurn(self, inst):
+        """
+        Executes a move or a drop
+        :param inst: instruction from command line input
+        :return: 2 fro stalemate, 1 for success and 0 for failure
+        """
         if self.num_turns >= 200:
             return 2
         self.nextTurn()
@@ -34,12 +39,11 @@ class Game:
                     """
                     Move peice
                     """
-                    pass
+                    self.board.move(origin, dest)
                 elif sameTeam(origin_piece, dest_piece):
                     raise MoveException("Both origin and destination is owned by you")
                 if not sameTeam(origin_piece, dest_piece):
-                    #capture
-                    pass
+                    self.board.capture(origin, dest)
             else:
                 raise MoveException("No piece at origin square {}".format(origin))
         else:
@@ -52,6 +56,7 @@ class Game:
             self.current = "UPPER"
         else:
             self.current = "lower"
+        self.num_turns += 1
 
 
 
