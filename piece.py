@@ -5,10 +5,11 @@ class Piece(metaclass=abc.ABCMeta):
     Class that represents a BoxShogi piece
     """
 
-    def __init__(self, player_type, index):
+    def __init__(self, player_type, index, name):
         self.type = player_type
         self.x = index[0]
         self.y = index[1]
+        self.name = name
         self.moves = []
         self.isPromote = False
         pass
@@ -24,17 +25,22 @@ class Piece(metaclass=abc.ABCMeta):
     def getMoves(self):
         pass
 
-    @abc.abstractmethod
     def promote(self):
         pass
 
     def getPlayerType(self):
         return self.getPlayerType()
 
+    def toString(self):
+        if self.type.islower():
+            return self.name.lower()
+        else:
+            return self.name.upper()
+
 class Drive(Piece):
 
     def __init__(self, player_type, index):
-        super(Drive, self).__init__(player_type, index)
+        super(Drive, self).__init__(player_type, index, 'd')
 
     def updateMoves(self):
         moves = set()
@@ -54,7 +60,7 @@ class Drive(Piece):
 
 class Notes(Piece):
     def __init__(self, player_type, index):
-        super(Notes, self).__init__(player_type, index)
+        super(Notes, self).__init__(player_type, index, 'n')
 
     def updateMoves(self):
         moves = set()
@@ -84,7 +90,7 @@ class Notes(Piece):
 
 class Governanace(Piece):
     def __init__(self, player_type, index):
-        super(Governanace, self).__init__(player_type, index)
+        super(Governanace, self).__init__(player_type, index, 'g')
 
     def updateMoves(self):
         moves = set()
@@ -109,9 +115,10 @@ class Governanace(Piece):
     def promote(self):
         self.isPromote = True
 
+
 class Shield(Piece):
     def __init__(self, player_type, index):
-        super(Shield, self).__init__(player_type, index)
+        super(Shield, self).__init__(player_type, index, 's')
 
     def updateMoves(self):
         moves = set()
@@ -127,7 +134,7 @@ class Shield(Piece):
 
 class Relay(Piece):
     def __init__(self, player_type, index):
-        super(Relay, self).__init__(player_type, index)
+        super(Relay, self).__init__(player_type, index, 'r')
 
     def updateMoves(self):
         moves = set()
@@ -156,7 +163,7 @@ class Relay(Piece):
 
 class Preview(Piece):
     def __init__(self, player_type, index):
-        super(Preview, self).__init__(player_type, index)
+        super(Preview, self).__init__(player_type, index, 'p')
     def updateMoves(self):
         if self.isPromote:
             moves = set()

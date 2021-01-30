@@ -1,5 +1,5 @@
 import os
-from utils import *
+from .utils import *
 from .piece import *
 BOARD_SIZE = 5
 
@@ -15,6 +15,8 @@ class Board:
     def __init__(self, game_mode):
         self.upper_pieces = dict()
         self.lower_pieces = dict()
+        self.upper_captured = list()
+        self.lower_captured = list()
         if game_mode == 'f':
             pass
         else:
@@ -39,7 +41,7 @@ class Board:
         board[0][1] = Preview('lower', (0, 1))
 
         board[0][4] = Notes('UPPER', (0, 4))
-        board[1][4] = Goverance('UPPER', (1, 4))
+        board[1][4] = Governanace('UPPER', (1, 4))
         board[2][4] = Relay('UPPER', (2, 4))
         board[3][4] = Shield("UPPER", (3, 4))
         board[4][4] = Drive("UPPER", (4, 4))
@@ -51,22 +53,57 @@ class Board:
         self.set_upper(upper)
         return board
 
+    def move(self, origin, dest):
+        """
+        Move a pice from origin to dest. Validity of moves is checked in game controller
+        :param origin: origin square
+        :param dest: destination square
+        :return: True is sucess, False is failure
+        """
+        try:
+            orig = location_to_index(origin)
+            dest = location_to_index(dest)
+            self._board[dest[0]][dest[1]] = self._board[orig[0]][orig[1]]
+            self._board[orig[0]][orig[1]] = ''
+            return True
+        except:
+            return False
+    def capture(self, origin, dest):
+        """
+        Method to perform a capture, validity is checked by game controller
+        :param origin: Origin square
+        :param dest: Destination sqaure
+        :return: True if sucess, false is failure
+        """
+        try:
+            d = location_to_index(dest)
+            if isinstance(self._board[d[0]][d[1]], Piece):
+                captured = self.getPiece(dest)
+                if captured.getPlayerType().islower():
+                    self.upper_captured.append(captured.toString())
+                else:
+                    self.lower_captured.append(captured.toString())
+            self.move(origin, dest)
+            return True
+        except:
+            return False
+
+
+
     def clear_pieces(self):
         self.lower_pieces = dict()
         self.upper_pieces = dict()
 
-    def getPiece(self, location):
+    def getPiece(self, location) -> Piece:
         """
         Method to get the piece at location
         :param location: string of length 2 of the form like a3
         :return: piece string, example p or P
         """
         row, col = location_to_index(location)
-        for p in self.pieces:
-            if self._board[row][col] == p.lower():
-                return p.lower()
-            if self._board[row][col] == p.upper():
-                return p.upper()
+        piece_at_location = self._board[row][col]
+        if isinstance(piece_at_location, Piece):
+            return piece_at_location
         return None
 
 
