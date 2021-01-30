@@ -20,6 +20,10 @@ class Game:
         """
         if self.num_turns >= 200:
             return 2
+        cmd, origin, dest, promote = inst
+        if cmd == 'move':
+            if not promote:
+                self.handle_move(origin, dest)
         self.nextTurn()
 
     def handle_move(self, origin, dest):
@@ -57,6 +61,9 @@ class Game:
         else:
             self.current = "lower"
         self.num_turns += 1
+
+    def isEnd(self):
+        return False
 
 
 

@@ -64,6 +64,7 @@ def getMove(command):
             cmd, origin, dest = move
         else:
             raise MoveException("Command does not have a valid move")
+    promote = promote == 'promote'
     return returnTuple
 
 def sameTeam(str1, str2):
