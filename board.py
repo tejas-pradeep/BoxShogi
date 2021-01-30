@@ -1,5 +1,6 @@
 import os
 from utils import *
+from .piece import *
 BOARD_SIZE = 5
 
 
@@ -14,7 +15,6 @@ class Board:
     def __init__(self, game_mode):
         self.upper_pieces = dict()
         self.lower_pieces = dict()
-        self.pieces = ['k', 'g', 's', 'b', 'r']
         if game_mode == 'f':
             pass
         else:
@@ -31,19 +31,19 @@ class Board:
         upper = dict()
         board = [['' for i in range(5)] for j in range(5)]
         print(board)
-        board[0][0] = 'd'
-        board[1][0] = 's'
-        board[2][0] = 'r'
-        board[3][0] = 'g'
-        board[4][0] = 'n'
-        board[0][1] = 'p'
+        board[0][0] = Drive('lower', (0, 0))
+        board[1][0] = Shield('lower', (1, 0))
+        board[2][0] = Relay('lower', (2, 0))
+        board[3][0] = Governanace('lower', (3, 0))
+        board[4][0] = Notes('lower', (4, 0))
+        board[0][1] = Preview('lower', (0, 1))
 
-        board[0][4] = 'N'
-        board[1][4] = 'G'
-        board[2][4] = 'R'
-        board[3][4] = 'S'
-        board[4][4] = 'D'
-        board[4][3] = 'P'
+        board[0][4] = Notes('UPPER', (0, 4))
+        board[1][4] = Goverance('UPPER', (1, 4))
+        board[2][4] = Relay('UPPER', (2, 4))
+        board[3][4] = Shield("UPPER", (3, 4))
+        board[4][4] = Drive("UPPER", (4, 4))
+        board[4][3] = Preview("UPPER", (4, 3))
 
         upper = {'D': 'e5', 'G': 'b5', 'R': 'c5', 'S': 'd5', 'N': 'a5', 'P': 'e4'}
         lower = {'d': 'a1', 's': 'b1', 'r': 'c1', 'g': 'd1', 'n': 'e1', 'p': 'a2'}
