@@ -1,4 +1,4 @@
-from .exceptions import PositionOutofBoundsException, MoveException
+from exceptions import PositionOutofBoundsException, MoveException
 
 def parseTestCase(path):
     """
@@ -47,6 +47,8 @@ def checkBounds(origin, dest):
     try:
         o = location_to_index(origin)
         d = location_to_index(dest)
+        print(o)
+        print(d)
         return 5 > o[0] >= 0 and 5 > o[1] >= 0 and 5 > d[0] >= 0 and 5 > d[1] >= 0
     except PositionOutofBoundsException:
         return False
@@ -54,7 +56,7 @@ def checkBounds(origin, dest):
 
 def getMove(command):
     move = command.strip().split()
-    returnTuple = (cmd, origin, dest, promote) = "move", "", "", ""
+    (cmd, origin, dest, promote) = "move", "", "", ""
     if len(move) == 4:
         origin, dest, promote = move[1:]
     elif len(move) == 3:
@@ -65,9 +67,9 @@ def getMove(command):
         else:
             raise MoveException("Command does not have a valid move")
     promote = promote == 'promote'
-    return returnTuple
+    return cmd, origin, dest, promote
 
 def sameTeam(str1, str2):
-    return (str1.isLower() and str2.isLower()) or (str1.isUpper() and str2.isUpper())
+    return (str1.islower() and str2.islower()) or (str1.isupper() and str2.isupper())
 
 

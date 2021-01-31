@@ -1,6 +1,6 @@
 import os
-from .utils import *
-from .piece import *
+from utils import *
+from piece import *
 BOARD_SIZE = 5
 
 
@@ -32,7 +32,6 @@ class Board:
         lower = dict()
         upper = dict()
         board = [['' for i in range(5)] for j in range(5)]
-        print(board)
         board[0][0] = Drive('lower', (0, 0))
         board[1][0] = Shield('lower', (1, 0))
         board[2][0] = Relay('lower', (2, 0))
@@ -120,7 +119,11 @@ class Board:
 
             s += '' + str(row + 1) + ' |'
             for col in range(0, len(self._board[row])):
-                s += self._stringifySquare(self._board[col][row])
+                if isinstance(self._board[col][row], Piece):
+                    temp = self._board[col][row].toString()
+                else:
+                    temp = self._board[col][row]
+                s += self._stringifySquare(temp)
 
             s += os.linesep
 

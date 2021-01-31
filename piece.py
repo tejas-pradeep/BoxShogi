@@ -29,7 +29,7 @@ class Piece(metaclass=abc.ABCMeta):
         pass
 
     def getPlayerType(self):
-        return self.getPlayerType()
+        return self.type
 
     def toString(self):
         if self.type.islower():

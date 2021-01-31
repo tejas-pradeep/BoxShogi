@@ -1,6 +1,6 @@
-from .board import Board
-from .utils import *
-from .exceptions import *
+from board import Board
+from utils import *
+from exceptions import *
 
 class Game:
     current = 'lower'
@@ -28,7 +28,7 @@ class Game:
 
     def handle_move(self, origin, dest):
         """
-        Mehtod to move piecec from origin to destination
+        Method to move piecec from origin to destination
         :param origin: origin square strign of length 2
         :param dest: origin destination square of length 2
         :return: True is sucess False is failure
@@ -37,16 +37,16 @@ class Game:
             origin_piece = self.board.getPiece(origin)
             dest_piece = self.board.getPiece(dest)
             if origin_piece:
-                if not sameTeam(origin, self.current):
+                if not sameTeam(origin_piece.getPlayerType(), self.current):
                     raise WrongPlayerException("You tried to move the other player's piece.")
                 if dest_piece is None:
                     """
-                    Move peice
+                    Move piece
                     """
                     self.board.move(origin, dest)
-                elif sameTeam(origin_piece, dest_piece):
+                elif sameTeam(origin_piece.getPlayerType(), dest_piece.getPlayerType()):
                     raise MoveException("Both origin and destination is owned by you")
-                if not sameTeam(origin_piece, dest_piece):
+                else:
                     self.board.capture(origin, dest)
             else:
                 raise MoveException("No piece at origin square {}".format(origin))
