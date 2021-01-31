@@ -2,18 +2,26 @@ import sys
 from utils import *
 from game import Game
 from board import Board
+from exceptions import *
 
 
 def game(game_mode='i'):
     game = Game(game_mode)
     game_end = False
     while not game_end:
-        showBoard(game)
-        command = input(game.current + ">")
-        print("{} player action: {}".format(game.current, command))
-        instruction = getMove(command)
-        game.executeTurn(instruction)
-        game_end = game.isEnd()
+        try:
+            showBoard(game)
+            command = input(game.current + ">")
+            print("{} player action: {}".format(game.current, command))
+            instruction = getMove(command)
+            game.executeTurn(instruction)
+            game_end = game.isEnd()
+        except (MoveException, WrongPlayerException, PositionOutofBoundsException) as e:
+            print("\n------------------------------\n")
+            print("{} player wins. Illegal move".format(game.getCurrentPlayer()))
+            print("\nWhat went wrong: {}".format(str(e)))
+            quit()  
+
 
 def showBoard(game):
     print(game.board)

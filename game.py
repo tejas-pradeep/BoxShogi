@@ -13,6 +13,10 @@ class Game:
 
         """
         self.board = Board(game_mode)
+
+    def getCurrentPlayer(self):
+        return self.current
+
     def executeTurn(self, inst):
         """
         Executes a move or a drop
@@ -24,7 +28,10 @@ class Game:
         cmd, origin, dest, promote = inst
         if cmd == 'move':
             if not promote:
+                if self.checkValidPromotion(origin, dest):
+                    raise MoveException("You did not specify the promote flag when your piece promoted.")
                 self.handle_move(origin, dest)
+
         self.nextTurn()
 
     def handle_move(self, origin, dest):
@@ -58,6 +65,15 @@ class Game:
                 raise MoveException("No piece at origin square {}".format(origin))
         else:
             raise MoveException("Either origin or destination is out of bounds")
+
+    def checkValidPromotion(self, origin, dest):
+        promotion_row = {'lower' : 4, "UPPER" : 0}
+        origin_piece = self.board.getPiece(origin)
+        dest_index = location_to_index(dest)
+        if dest_index[0] == promotion_row[origin_piece.getPlayerType()]:
+            return True
+        return False
+
 
 
 

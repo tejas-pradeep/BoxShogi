@@ -47,8 +47,6 @@ def checkBounds(origin, dest):
     try:
         o = location_to_index(origin)
         d = location_to_index(dest)
-        print(o)
-        print(d)
         return 5 > o[0] >= 0 and 5 > o[1] >= 0 and 5 > d[0] >= 0 and 5 > d[1] >= 0
     except PositionOutofBoundsException:
         return False
