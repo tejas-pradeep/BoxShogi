@@ -136,6 +136,9 @@ class Shield(Piece):
     def getMoves(self):
         return self.moves
 
+    def promote(self):
+        return False
+
 class Relay(Piece):
     def __init__(self, player_type, index):
         super(Relay, self).__init__(player_type, index, 'r')

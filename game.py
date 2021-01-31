@@ -1,7 +1,7 @@
 from board import Board
 from utils import *
 from exceptions import *
-from piece import Piece
+from piece import Piece, Preview
 
 class Game:
     current = 'lower'
@@ -28,9 +28,19 @@ class Game:
         cmd, origin, dest, promote = inst
         if cmd == 'move':
             if not promote:
-                if self.checkValidPromotion(origin, dest):
+                if self.checkValidPromotion(origin, dest) and isinstance(self.board.getPiece(origin), Preview):
                     raise MoveException("You did not specify the promote flag when your piece promoted.")
                 self.handle_move(origin, dest)
+            else:
+                if not self.checkValidPromotion(origin, dest):
+                    raise MoveException("You added in the promote flag when the move {} to {} does not have a promotion".format(origin, dest))
+                self.handle_move(origin, dest)
+                promoted_piece = self.board.getPiece(dest)
+                if isinstance(promoted_piece, Piece):
+                    flag = promoted_piece.promote()
+                    if not flag:
+                        raise MoveException("You tired to promote a piece that cannot be promoted!")
+
 
         self.nextTurn()
 
@@ -70,7 +80,7 @@ class Game:
         promotion_row = {'lower' : 4, "UPPER" : 0}
         origin_piece = self.board.getPiece(origin)
         dest_index = location_to_index(dest)
-        if dest_index[0] == promotion_row[origin_piece.getPlayerType()]:
+        if dest_index[1] == promotion_row[origin_piece.getPlayerType()]:
             return True
         return False
 
