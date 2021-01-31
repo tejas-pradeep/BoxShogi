@@ -85,7 +85,8 @@ class Notes(Piece):
 
     def promote(self):
         self.isPromote = True
-        self.moves = self.getMoves()
+        self.updateMoves()
+        self.name = "+" + self.name
         return True
 
 class Governanace(Piece):
@@ -114,6 +115,9 @@ class Governanace(Piece):
 
     def promote(self):
         self.isPromote = True
+        self.updateMoves()
+        self.name = "+" + self.name
+        return True
 
 
 class Shield(Piece):
@@ -160,6 +164,9 @@ class Relay(Piece):
 
     def promote(self):
         self.isPromote = True
+        self.updateMoves()
+        self.name = "+" + self.name
+        return True
 
 class Preview(Piece):
     def __init__(self, player_type, index):
@@ -181,6 +188,9 @@ class Preview(Piece):
         return self.moves
     def promote(self):
         self.isPromote = True
+        self.updateMoves()
+        self.name = "+" + self.name
+        return True
 
 
 
