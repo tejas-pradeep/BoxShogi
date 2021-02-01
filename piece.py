@@ -55,13 +55,15 @@ class Drive(Piece):
     def __init__(self, player_type, index):
         super(Drive, self).__init__(player_type, index, 'd')
 
-    def updateMoves(self, check_moves=list()):
+    def updateMoves(self, check_moves=list(), own_pieces=list()):
         moves = set()
         directions = [-1, 0, 1]
         for i in directions:
             for j in directions:
-                if not (i == 0 and j == 0) and 0 <= self.row + i < 5 and 0 <= self.col + i < 5:
-                    moves.add((self.col + i, self.row + j))
+                if i == j == 0 or not checkBounds(self.col + i) or not checkBounds(self.row + j) or (self.col + i, self.row + j) in own_pieces\
+                        or (self.col + i, self.row + j) in check_moves:
+                    continue
+                moves.add((self.col + i, self.row + j))
         moves = list(moves)
         self.moves = moves
 
@@ -107,10 +109,10 @@ class Notes(Piece):
                 break
         # horizontally negetive moves
         for i in range(1, 5):
-            if not checkBounds(self.row - i):
+            if not checkBounds(self.col - i):
                 break
-            moves.add((self.col, self.row - i))
-            if (self.col, self.row - i) in blocked_path:
+            moves.add((self.col - i, self.row))
+            if (self.col - i, self.row) in blocked_path:
                 break
 
         if self.isPromote:

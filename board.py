@@ -96,6 +96,12 @@ class Board:
         except:
             return False
 
+    def removePiece(self, piece, player):
+        if player == 'lower':
+            self.lower_pieces.remove(piece)
+        else:
+            self.upper_pieces.remove(piece)
+
 
 
     def clear_pieces(self):
@@ -120,11 +126,19 @@ class Board:
             locations.append(i.getLocation())
         return locations
 
+    def getOwnPieceLocations(self, current):
+        current_player = {'lower': self.lower_pieces, 'UPPER': self.upper_pieces}
+        blocked_location = set()
+        for i in current_player[current]:
+            blocked_location.add(i.getLocation())
+        return list(blocked_location)
+
+
     def getAllOpponentMoves(self, current):
         opponent = {'lower': self.upper_pieces, 'UPPER': self.lower_pieces}
         moves = set()
         for i in opponent[current]:
-            moves.add(i.getMoves())
+            moves.update(i.getMoves())
         return list(moves)
 
     def getOpponentKing(self, current_player):

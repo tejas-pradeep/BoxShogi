@@ -11,7 +11,7 @@ def game(game_mode='i'):
     while not game_end:
         try:
             showBoard(game)
-            isCheck(game.get_checks_moves(), game.getCurrentPlayer())
+            isCheck(game.get_check_moves(), game.getCurrentPlayer())
             command = input(game.current + ">")
             print("{} player action: {}".format(game.current, command))
             instruction = getMove(command)

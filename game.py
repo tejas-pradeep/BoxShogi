@@ -11,6 +11,7 @@ class Game:
         """
         self.board = Board(game_mode)
         self.current = 'lower'
+        self.opponent = 'UPPER'
         self.num_turns = 0
         self.gameEnd = False
         self.is_check = {'lower': (False, list()), "UPPER": (False, list())}
@@ -63,6 +64,8 @@ class Game:
                     raise WrongPlayerException("You tried to move the other player's piece.")
                 if isinstance(origin_piece, Notes) or isinstance(origin_piece, Governanace):
                     origin_piece.updateMoves(self.board.getAllPieceLocations())
+                elif isinstance(origin_piece, Drive):
+                    origin_piece.updateMoves(self.board.getAllOpponentMoves(self.current), self.board.getOwnPieceLocations(self.current))
                 else:
                     origin_piece.updateMoves()
                 origin_moves = origin_piece.getMoves()
@@ -79,11 +82,14 @@ class Game:
                     raise MoveException("Both origin and destination is owned by you")
                 else:
                     self.board.capture(origin, dest)
+                    self.board.removePiece(dest_piece, self.opponent)
+                origin_piece.updateLocation(dest_index)
                 if isinstance(origin_piece, Notes) or isinstance(origin_piece, Governanace):
                     origin_piece.updateMoves(self.board.getAllPieceLocations())
+                elif isinstance(origin_piece, Drive):
+                    origin_piece.updateMoves(self.board.getAllOpponentMoves(self.current), self.board.getOwnPieceLocations(self.current))
                 else:
                     origin_piece.updateMoves()
-                origin_piece.updateLocation(dest_index)
                 self.check_for_checks(origin_piece)
             else:
                 raise MoveException("No piece at origin square {}".format(origin))
@@ -93,17 +99,18 @@ class Game:
     def check_for_checks(self, origin_piece):
         opponent_drive = self.board.getOpponentKing(self.current)
         if opponent_drive.getLocation() in origin_piece.getMoves():
-            opponent_drive.updateMoves()
-            self.is_check[opponent_drive.getPlayerType()] = (True, [index_to_location(i) for i in opponent_drive.getMoves()])
+            opponent_drive.updateMoves(self.board.getAllOpponentMoves(opponent_drive.getPlayerType()), self.board.getOwnPieceLocations(self.opponent))
+            escape_moves = opponent_drive.getMoves()
+            escape_moves.append(self.board.getCheckCaptureEscape(origin_piece.getLocation()))
+            self.is_check[opponent_drive.getPlayerType()] = (True, escape_moves)
         self.isCheckmate(opponent_drive)
 
-    def isCheckmate(self, opponent_drive):
+    def Checkmate(self):
         """
         If opponenet king has no moves, it is a checkmate
         """
-        if opponent_drive.getMoves() == []:
-            print("\n {} player wins. Checkmate".format(self.current))
-            self.gameEnd = True
+        print("\n {} player wins. Checkmate".format(self.current))
+        self.gameEnd = True
 
 
     def checkValidPromotion(self, origin, dest):
@@ -120,12 +127,14 @@ class Game:
     def nextTurn(self):
         if self.current == "lower":
             self.current = "UPPER"
+            self.opponent = 'lower'
         else:
             self.current = "lower"
+            self.opponent = 'UPPER'
         self.num_turns += 1
 
     def isEnd(self):
-        return self.ganeEnd
+        return self.gameEnd
 
 
 
