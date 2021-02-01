@@ -42,6 +42,9 @@ def location_to_index(location):
         raise PositionOutofBoundsException("Invalid location, square {} does not exist".format(location))
     return col, row - 1
 
+def index_to_location(index):
+    return chr(ord('a') + index[0]), index[1] + 1
+
 
 def checkBounds(origin, dest=None):
     if dest is None:

@@ -11,6 +11,7 @@ def game(game_mode='i'):
     while not game_end:
         try:
             showBoard(game)
+            isCheck(game.get_checks_moves(), game.getCurrentPlayer())
             command = input(game.current + ">")
             print("{} player action: {}".format(game.current, command))
             instruction = getMove(command)
@@ -28,6 +29,17 @@ def showBoard(game):
     print("Captures UPPER: {}".format(" " .join(game.board.upper_captured)))
     print("Captures lower: {}".format(' '.join(game.board.lower_captured)))
     print('')
+
+def isCheck(check_tuple, current_player):
+    """
+    Method check tuple prints message and available moves if current player is in check.
+    :param check_tuple: IS a tuple containing a boolean at index 0, which indicates weather the current player is in check.
+    And a list at index 1 containing possible moves.
+    """
+    if check_tuple[0]:
+        print("\n {} player is in check!".format(current_player))
+        print("Available moves: {}".format(' '.join(check_tuple[1])))
+
 
 
 def main():

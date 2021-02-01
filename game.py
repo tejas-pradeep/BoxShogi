@@ -4,18 +4,22 @@ from exceptions import *
 from piece import Piece, Preview, Notes, Governanace, Drive
 
 class Game:
-    current = 'lower'
-    num_turns = 0
-
     def __init__(self, game_mode = 'i'):
         """
-        Game mode i fro interactive and f for file
+        Game mode i for interactive and f for file
 
         """
         self.board = Board(game_mode)
+        self.current = 'lower'
+        self.num_turns = 0
+        self.gameEnd = False
+        self.is_check = {'lower': (False, list()), "UPPER": (False, list())}
 
     def getCurrentPlayer(self):
         return self.current
+
+    def get_check_moves(self):
+        return self.is_check[self.getCurrentPlayer()]
 
     def executeTurn(self, inst):
         """
@@ -80,10 +84,27 @@ class Game:
                 else:
                     origin_piece.updateMoves()
                 origin_piece.updateLocation(dest_index)
+                self.check_for_checks(origin_piece)
             else:
                 raise MoveException("No piece at origin square {}".format(origin))
         else:
             raise MoveException("Either origin or destination is out of bounds")
+
+    def check_for_checks(self, origin_piece):
+        opponent_drive = self.board.getOpponentKing(self.current)
+        if opponent_drive.getLocation() in origin_piece.getMoves():
+            opponent_drive.updateMoves()
+            self.is_check[opponent_drive.getPlayerType()] = (True, [index_to_location(i) for i in opponent_drive.getMoves()])
+        self.isCheckmate(opponent_drive)
+
+    def isCheckmate(self, opponent_drive):
+        """
+        If opponenet king has no moves, it is a checkmate
+        """
+        if opponent_drive.getMoves() == []:
+            print("\n {} player wins. Checkmate".format(self.current))
+            self.gameEnd = True
+
 
     def checkValidPromotion(self, origin, dest):
         promotion_row = {'lower' : 4, "UPPER" : 0}
@@ -104,7 +125,7 @@ class Game:
         self.num_turns += 1
 
     def isEnd(self):
-        return False
+        return self.ganeEnd
 
 
 

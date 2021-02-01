@@ -127,6 +127,12 @@ class Board:
             moves.add(i.getMoves())
         return list(moves)
 
+    def getOpponentKing(self, current_player):
+        if current_player == 'lower':
+            return self.upper_drive
+        else:
+            return self.lower_drive
+
 
     def __repr__(self):
         return self._stringifyBoard()
