@@ -23,7 +23,7 @@ class Game:
         :param inst: instruction from command line input
         :return: 2 fro stalemate, 1 for success and 0 for failure
         """
-        if self.num_turns >= 200:
+        if self.num_turns >= 400:
             return 2
         cmd, origin, dest, promote = inst
         if cmd == 'move':

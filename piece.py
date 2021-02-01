@@ -7,11 +7,12 @@ class Piece(metaclass=abc.ABCMeta):
 
     def __init__(self, player_type, index, name):
         self.type = player_type
-        self.x = index[0]
-        self.y = index[1]
+        self.col = index[0]
+        self.row = index[1]
         self.name = name
         self.moves = []
         self.isPromote = False
+        self.updateMoves()
         pass
 
     def __repr__(self):
@@ -37,18 +38,21 @@ class Piece(metaclass=abc.ABCMeta):
         else:
             return self.name.upper()
 
+    def getLocation(self):
+        return self.col, self.row
+
 class Drive(Piece):
 
     def __init__(self, player_type, index):
         super(Drive, self).__init__(player_type, index, 'd')
 
-    def updateMoves(self):
+    def updateMoves(self, check_moves=None):
         moves = set()
         directions = [-1, 0, 1]
         for i in directions:
             for j in directions:
-                if not(i == 0 and j == 0) and 0 <= self.x + i < 5 and 0 <= self.y + i < 5:
-                    moves.add((self.x + i, self.y + j))
+                if not(i == 0 and j == 0) and 0 <= self.row + i < 5 and 0 <= self.col + i < 5:
+                    moves.add((self.col + i, self.row + j))
         moves = list(moves)
         self.moves = moves
 
@@ -59,24 +63,29 @@ class Drive(Piece):
         return False
 
 class Notes(Piece):
+    #need to account for pieces in the way
     def __init__(self, player_type, index):
         super(Notes, self).__init__(player_type, index, 'n')
 
-    def updateMoves(self):
+    def updateMoves(self, blocked_path=None):
+        """
+        Rook moves in four directions, to account for blockages I am using 4 loops to add moves in each direction
+        :param blocked_path:
+        :return:
+        """
         moves = set()
-        for i in range(-5, 5):
-            if i == 0:
-                continue
-            if 0 <= self.x + i < 5:
-                moves.add((self.x + i, self.y))
-            if 0 <= self.y + i < 5:
-                moves.add((self.x, self.y + i))
+        #vertically positive moves
+        for i in range(5):
+            if self.row + i > 4:
+                break
+            if ((self.col, self.row + i) in)
+
         if self.isPromote:
             directions = [-1, 0, 1]
             for i in directions:
                 for j in directions:
-                    if not (i == 0 and j == 0) and 0 <= self.x + i < 5 and 0 <= self.y + i < 5:
-                        moves.add((self.x + i, self.y + j))
+                    if not (i == 0 and j == 0) and 0 <= self.row + i < 5 and 0 <= self.col + i < 5:
+                        moves.add((self.col + i, self.row + j))
         moves = list(moves)
         self.moves = moves
 
@@ -93,21 +102,21 @@ class Governanace(Piece):
     def __init__(self, player_type, index):
         super(Governanace, self).__init__(player_type, index, 'g')
 
-    def updateMoves(self):
+    def updateMoves(self, blocked_path=None):
         moves = set()
         j = 0
         for i in range(-2, 3):
-            if i != 0 and 0 <= self.x + i < 5 and 0 <= self.y + i < 5:
-                moves.add((self.x + i, self.y + i))
+            if i != 0 and 0 <= self.row + i < 5 and 0 <= self.col + i < 5:
+                moves.add((self.col + i, self.row + i))
             j = -1 * i
-            if i != 0 and 0 <= self.x + i < 5 and 0 <= self.y + j < 5:
-                moves.add((self.x + i, self.y + j))
+            if i != 0 and 0 <= self.row + i < 5 and 0 <= self.col + j < 5:
+                moves.add((self.col + i, self.row + j))
         if self.isPromote:
             directions = [-1, 0, 1]
             for i in directions:
                 for j in directions:
-                    if not (i == 0 and j == 0) and 0 <= self.x + i < 5 and 0 <= self.y + i < 5:
-                        moves.add((self.x + i, self.y + j))
+                    if not (i == 0 and j == 0) and 0 <= self.row + i < 5 and 0 <= self.col + i < 5:
+                        moves.add((self.col + i, self.row + j))
         self.moves = list(moves)
 
     def getMoves(self):
@@ -129,9 +138,9 @@ class Shield(Piece):
         directions = [-1, 0, 1]
         for i in directions:
             for j in directions:
-                if i != 0 or j != 0 and 0 <= self.x + i < 5 and 0 <= self.y + i < 5:
+                if i != 0 or j != 0 and 0 <= self.row + i < 5 and 0 <= self.col + i < 5:
                     if (i, j) != (-1, -1) and (i, j) != (1, -1):
-                        moves.add((self.x + i, self.y + j))
+                        moves.add((self.col + i, self.row + j))
         self.moves = list(moves)
     def getMoves(self):
         return self.moves
@@ -149,17 +158,17 @@ class Relay(Piece):
             directions = [-1, 0, 1]
             for i in directions:
                 for j in directions:
-                    if i != 0 or j != 0 and 0 <= self.x + i < 5 and 0 <= self.y + i < 5:
+                    if i != 0 or j != 0 and 0 <= self.row + i < 5 and 0 <= self.col + i < 5:
                         if (i, j) != (-1, -1) and (i, j) != (1, -1):
-                            moves.add((self.x + i, self.y + j))
+                            moves.add((self.col + i, self.row + j))
         else:
             banned_list = [(-1, 0), (1, 0), (0, -1)]
             directions = [-1, 0, 1]
             for i in directions:
                 for j in directions:
-                    if i != 0 or j != 0 and 0 <= self.x + i < 5 and 0 <= self.y + i < 5:
+                    if i != 0 or j != 0 and 0 <= self.row + i < 5 and 0 <= self.col + i < 5:
                         if (i, j) not in banned_list:
-                            moves.add((self.x + i, self.y + j))
+                            moves.add((self.col + i, self.row + j))
         self.moves = list(moves)
 
     def getMoves(self):
@@ -180,13 +189,13 @@ class Preview(Piece):
             directions = [-1, 0, 1]
             for i in directions:
                 for j in directions:
-                    if i != 0 or j != 0 and 0 <= self.x + i < 5 and 0 <= self.y + i < 5:
+                    if i != 0 or j != 0 and 0 <= self.row + i < 5 and 0 <= self.col + i < 5:
                         if (i, j) != (-1, -1) and (i, j) != (1, -1):
-                            moves.add((self.x + i, self.y + j))
+                            moves.add((self.col + i, self.row + j))
             self.moves = list(moves)
         else:
-            if self.y + 1 < 5:
-                self.moves = [self.y + 1]
+            if self.row + 1 < 5:
+                self.moves = [(self.col, self.row + 1)]
     def getMoves(self):
         return self.moves
     def promote(self):

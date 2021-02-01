@@ -34,13 +34,13 @@ def location_to_index(location):
     """
     if len(location) != 2:
        raise PositionOutofBoundsException("Position has a length greater than 2")
-    col = int(location[1])
-    if col < 1 or col > 5:
+    row = int(location[1])
+    if row < 1 or row > 5:
         raise PositionOutofBoundsException("Invalid location, square {} does not exist".format(location))
-    row = ord(location[0].lower()) - 97
-    if row < 0 or row > 4:
+    col = ord(location[0].lower()) - 97
+    if col < 0 or col > 4:
         raise PositionOutofBoundsException("Invalid location, square {} does not exist".format(location))
-    return row, col - 1
+    return col, row - 1
 
 
 def checkBounds(origin, dest):

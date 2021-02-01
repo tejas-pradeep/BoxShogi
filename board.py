@@ -13,44 +13,53 @@ class Board:
     BOARD_SIZE = 5
 
     def __init__(self, game_mode):
-        self.upper_pieces = dict()
-        self.lower_pieces = dict()
         self.upper_captured = list()
         self.lower_captured = list()
+        self.lower_drive = Drive('lower', (0, 0))
+        self.upper_drive = Drive('UPPER', (4, 4))
+        self.upper_pieces = self.createUpperPieces()
+        self.lower_pieces = self.createLowerPieces()
+        self.initializeSpecialPieces()
         if game_mode == 'f':
             pass
         else:
             self._board = self._initEmptyBoard()
 
-    def set_lower(self, lower_dict):
-        self.lower_pieces = lower_dict
-
-    def set_upper(self, upper_dict):
-        self.upper_pieces = upper_dict
-
     def _initEmptyBoard(self):
-        lower = dict()
-        upper = dict()
         board = [['' for i in range(5)] for j in range(5)]
-        board[0][0] = Drive('lower', (0, 0))
-        board[1][0] = Shield('lower', (1, 0))
-        board[2][0] = Relay('lower', (2, 0))
-        board[3][0] = Governanace('lower', (3, 0))
-        board[4][0] = Notes('lower', (4, 0))
-        board[0][1] = Preview('lower', (0, 1))
-
-        board[0][4] = Notes('UPPER', (0, 4))
-        board[1][4] = Governanace('UPPER', (1, 4))
-        board[2][4] = Relay('UPPER', (2, 4))
-        board[3][4] = Shield("UPPER", (3, 4))
-        board[4][4] = Drive("UPPER", (4, 4))
-        board[4][3] = Preview("UPPER", (4, 3))
-
-        upper = {'D': 'e5', 'G': 'b5', 'R': 'c5', 'S': 'd5', 'N': 'a5', 'P': 'e4'}
-        lower = {'d': 'a1', 's': 'b1', 'r': 'c1', 'g': 'd1', 'n': 'e1', 'p': 'a2'}
-        self.set_lower(lower)
-        self.set_upper(upper)
+        for i in self.lower_pieces + self.upper_pieces:
+            index = i.getLocation()
+            board[index[0]][index[1]] = i
         return board
+
+    def createLowerPieces(self):
+        lower_pieces = [
+            self.lower_drive,
+            Shield('lower', (1, 0)),
+            Relay('lower', (2, 0)),
+            Governanace('lower', (3, 0)),
+            Notes('lower', (4, 0)),
+            Preview('lower', (0, 1))
+        ]
+        return lower_pieces
+
+    def createUpperPieces(self):
+        upper_pieces = [
+            self.upper_drive,
+            Notes('UPPER', (0, 4)),
+            Governanace('UPPER', (1, 4)),
+            Relay('UPPER', (2, 4)),
+            Shield("UPPER", (3, 4)),
+            Preview("UPPER", (4, 3))
+        ]
+        return upper_pieces
+
+    def initializeSpecialPieces(self):
+        all_pieces_location = self.getAllPieceLocations()
+        for i in self.lower_pieces + self.upper_pieces:
+            if isinstance(i, Notes) or isinstance(i, Governanace):
+                i.updateMoves(all_pieces_location)
+
 
     def move(self, origin, dest):
         """
@@ -99,12 +108,24 @@ class Board:
         :param location: string of length 2 of the form like a3
         :return: piece string, example p or P
         """
-        row, col = location_to_index(location)
-        piece_at_location = self._board[row][col]
+        col, row = location_to_index(location)
+        piece_at_location = self._board[col][row]
         if isinstance(piece_at_location, Piece):
             return piece_at_location
         return None
 
+    def getAllPieceLocations(self):
+        locations = list()
+        for i in self.lower_pieces + self.upper_pieces:
+            locations.append(i.getLocation())
+        return locations
+
+    def getAllOpponentMoves(self, current):
+        opponent = {'lower': self.upper_pieces, 'UPPER': self.lower_pieces}
+        moves = set()
+        for i in opponent[current]:
+            moves.add(i.getMoves())
+        return list(moves)
 
 
     def __repr__(self):
