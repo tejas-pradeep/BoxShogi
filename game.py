@@ -1,7 +1,7 @@
 from board import Board
 from utils import *
 from exceptions import *
-from piece import Piece, Preview
+from piece import Piece, Preview, Notes, Governanace, Drive
 
 class Game:
     current = 'lower'
@@ -57,9 +57,13 @@ class Game:
             if origin_piece and isinstance(origin_piece, Piece):
                 if not sameTeam(origin_piece.getPlayerType(), self.current):
                     raise WrongPlayerException("You tried to move the other player's piece.")
-                origin_piece.updateMoves()
+                if isinstance(origin_piece, Notes) or isinstance(origin_piece, Governanace):
+                    origin_piece.updateMoves(self.board.getAllPieceLocations())
+                else:
+                    origin_piece.updateMoves()
                 origin_moves = origin_piece.getMoves()
-                if location_to_index(dest) not in origin_moves:
+                dest_index = location_to_index(dest)
+                if dest_index not in origin_moves:
                     raise MoveException("You tried to move a piece to a location it cant reach on this turn.")
                 if dest_piece is None:
                     """
@@ -71,6 +75,11 @@ class Game:
                     raise MoveException("Both origin and destination is owned by you")
                 else:
                     self.board.capture(origin, dest)
+                if isinstance(origin_piece, Notes) or isinstance(origin_piece, Governanace):
+                    origin_piece.updateMoves(self.board.getAllPieceLocations())
+                else:
+                    origin_piece.updateMoves()
+                origin_piece.updateLocation(dest_index)
             else:
                 raise MoveException("No piece at origin square {}".format(origin))
         else:

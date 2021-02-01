@@ -43,13 +43,16 @@ def location_to_index(location):
     return col, row - 1
 
 
-def checkBounds(origin, dest):
-    try:
-        o = location_to_index(origin)
-        d = location_to_index(dest)
-        return 5 > o[0] >= 0 and 5 > o[1] >= 0 and 5 > d[0] >= 0 and 5 > d[1] >= 0
-    except PositionOutofBoundsException:
-        return False
+def checkBounds(origin, dest=None):
+    if dest is None:
+        return 5 > origin >= 0
+    else:
+        try:
+            o = location_to_index(origin)
+            d = location_to_index(dest)
+            return 5 > o[0] >= 0 and 5 > o[1] >= 0 and 5 > d[0] >= 0 and 5 > d[1] >= 0
+        except PositionOutofBoundsException:
+            return False
 
 
 def getMove(command):
