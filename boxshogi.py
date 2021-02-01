@@ -25,8 +25,8 @@ def game(game_mode='i'):
 
 def showBoard(game):
     print(game.board)
-    print("Captures UPPER: {}".format(game.board.upper_captured))
-    print("Captures lower: {}".format(game.board.lower_captured))
+    print("Captures UPPER: {}".format(" " .join(game.board.upper_captured)))
+    print("Captures lower: {}".format(' '.join(game.board.lower_captured)))
     print('')
 
 
