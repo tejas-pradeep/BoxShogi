@@ -1,6 +1,7 @@
 import os
 from utils import *
 from piece import *
+from exceptions import FileParseException
 BOARD_SIZE = 5
 
 
@@ -12,25 +13,59 @@ class Board:
     # The BoxShogi board is 5x5
     BOARD_SIZE = 5
 
-    def __init__(self, game_mode):
+    def __init__(self, game_mode, file_input=None):
         self.upper_captured = list()
         self.lower_captured = list()
         self.lower_drive = Drive('lower', (0, 0))
         self.upper_drive = Drive('UPPER', (4, 4))
-        self.upper_pieces = self.createUpperPieces()
-        self.lower_pieces = self.createLowerPieces()
-        self.initializeSpecialPieces()
+        self.upper_pieces = list()
+        self.lower_pieces = list()
         if game_mode == 'f':
-            pass
+            self._initFilePieces(file_input)
+            self._board = self._initBoard()
         else:
-            self._board = self._initEmptyBoard()
+            self.upper_pieces = self.createUpperPieces()
+            self.lower_pieces = self.createLowerPieces()
+            self._board = self._initBoard()
+        self.initializeSpecialPieces()
 
-    def _initEmptyBoard(self):
+    def _initBoard(self):
         board = [['' for i in range(5)] for j in range(5)]
         for i in self.lower_pieces + self.upper_pieces:
             index = i.getIndex()
             board[index[0]][index[1]] = i
         return board
+
+    def _initFilePieces(self, file_input):
+        piece_dict = {
+            'd': self.lower_drive,
+            'n': Notes('lower', (0, 0)),
+            's': Shield('lower', (0, 0)),
+            'r': Relay('lower', (0, 0)),
+            'g': Governanace('lower', (0, 0)),
+            'p': Preview('lower', (0, 0)),
+            'D': self.upper_drive,
+            'N': Notes('UPPER', (0, 0)),
+            'S': Shield('UPPER', (0, 0)),
+            'R': Relay('UPPER', (0, 0)),
+            'G': Governanace('UPPER', (0, 0)),
+            'P': Preview('UPPER', (0, 0)),
+        }
+        try:
+            for i in file_input['initialPieces']:
+                if len(i['piece']) == 2:
+                    piece_dict[i['piece'][1]].promote()
+                    i['piece'] = i['piece'][1]
+                piece = piece_dict[i['piece']]
+                piece.updateLocation(location_to_index(i['position']))
+                if piece.getPlayerType() == 'lower':
+                    self.lower_pieces.append(piece)
+                else:
+                    self.upper_pieces.append(piece)
+            self.upper_captured = file_input['upperCaptures']
+            self.lower_captured = file_input['lowerCaptures']
+        except:
+            raise FileParseException("Error while parsing input file.")
 
     def createLowerPieces(self):
         lower_pieces = [
@@ -88,9 +123,9 @@ class Board:
             if isinstance(self._board[d[0]][d[1]], Piece):
                 captured = self.getPiece(dest)
                 if captured.getPlayerType().islower():
-                    self.upper_captured.append(captured.toString())
+                    self.upper_captured.append(captured.toString().upper())
                 else:
-                    self.lower_captured.append(captured.toString())
+                    self.lower_captured.append(captured.toString().lower())
             self.move(origin, dest)
             return True
         except:

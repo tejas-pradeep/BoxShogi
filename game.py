@@ -4,16 +4,15 @@ from exceptions import *
 from piece import Piece, Preview, Notes, Governanace, Drive
 
 class Game:
-    def __init__(self, game_mode = 'i'):
+    def __init__(self, game_mode='i', file_input=None):
         """
         Game mode i for interactive and f for file
 
         """
-        self.board = Board(game_mode)
+        self.board = Board(game_mode, file_input)
         self.current = 'lower'
         self.opponent = 'UPPER'
         self.num_turns = 0
-        self.gameEnd = False
         self.is_check = {'lower': (False, list()), "UPPER": (False, list())}
 
     def getCurrentPlayer(self):
@@ -26,10 +25,10 @@ class Game:
         """
         Executes a move or a drop
         :param inst: instruction from command line input
-        :return: 2 fro stalemate, 1 for success and 0 for failure
+        :throws: GameEnd when the game ends with the desired message.
         """
         if self.num_turns >= 400:
-            return 2
+            raise GameEnd("Tie game. Too many moves")
         cmd, origin, dest, promote = inst
         if cmd == 'move':
             if not promote:
@@ -112,8 +111,7 @@ class Game:
         """
         If opponenet king has no moves, it is a checkmate
         """
-        print("\n {} player wins. Checkmate".format(self.current))
-        self.gameEnd = True
+        raise GameEnd("\n {} player wins. Checkmate".format(self.current))
 
 
     def checkValidPromotion(self, origin, dest):
@@ -135,9 +133,6 @@ class Game:
             self.current = "lower"
             self.opponent = 'UPPER'
         self.num_turns += 1
-
-    def isEnd(self):
-        return self.gameEnd
 
 
 
