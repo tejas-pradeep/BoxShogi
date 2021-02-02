@@ -76,12 +76,12 @@ def main():
     Main function to read terminal input
     """
     # game('f', parseTestCase('test_cases/blockOutOfCheck.in'))
-    game('i')
-    # if sys.argv[1] == '-f':
-    #     input = parseTestCase(sys.argv[2])
-    #     game('f', input)
-    # if sys.argv[1] == '-i':
-    #     game('i')
+    # game('i')
+    if sys.argv[1] == '-f':
+        input = parseTestCase(sys.argv[2])
+        game('f', input)
+    if sys.argv[1] == '-i':
+        game('i')
 
 
 if __name__ == "__main__":
