@@ -149,6 +149,8 @@ class Board:
         active_pieces = {'lower': self.lower_pieces, 'UPPER': self.upper_pieces}
         capture_moves = set()
         for i in active_pieces[player]:
+            if isinstance(i, Drive):
+                continue
             i.updateMoves()
             for j in i.getMoves():
                 if j == piece_location:
