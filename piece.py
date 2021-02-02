@@ -201,7 +201,8 @@ class Shield(Piece):
         banned_moves = [(self.col + 1, self.row + backwards), (self.col - 1, self.row + backwards)]
         for i in directions:
             for j in directions:
-                if i == j == 0 or not checkBounds(self.col + i) or not checkBounds(self.row + j) or (self.col + i, self.row + j) in banned_moves:
+                if i == j == 0 or not checkBounds(self.col + i) or not checkBounds(self.row + j) or \
+                        (self.col + i, self.row + j) in banned_moves:
                     continue
                 moves.add((self.col + i, self.row + j))
         moves = list(moves)
@@ -220,22 +221,24 @@ class Relay(Piece):
 
     def updateMoves(self):
         moves = set()
+        directions = [-1, 0, 1]
         backwards = -1 if self.type == 'lower' else 1
-        if self.isPromote:
-            directions = [-1, 0, 1]
+        if not self.isPromote:
+            banned_moves = [(self.col + 1, self.row), (self.col - 1, self.row), (self.col, self.row + backwards)]
             for i in directions:
                 for j in directions:
-                    if i != 0 or j != 0 and 0 <= self.row + i < 5 and 0 <= self.col + i < 5:
-                        if (i, j) != (-1, -1) and (i, j) != (1, -1):
-                            moves.add((self.col + i, self.row + j))
+                    if i == j == 0 or not checkBounds(self.col + i) or not checkBounds(self.row + j) or \
+                            (self.col + i, self.row + j) in banned_moves:
+                        continue
+                    moves.add((self.col + i, self.row + j))
         else:
-            banned_list = [(-1, 0), (1, 0), (0, backwards)]
-            directions = [-1, 0, 1]
+            banned_moves = [(self.col + 1, self.row + backwards), (self.col - 1, self.row + backwards)]
             for i in directions:
                 for j in directions:
-                    if i != 0 or j != 0 and 0 <= self.row + i < 5 and 0 <= self.col + i < 5:
-                        if (i, j) not in banned_list:
-                            moves.add((self.col + i, self.row + j))
+                    if i == j == 0 or not checkBounds(self.col + i) or not checkBounds(self.row + j) or (
+                    self.col + i, self.row + j) in banned_moves:
+                        continue
+                    moves.add((self.col + i, self.row + j))
         self.moves = list(moves)
 
     def getMoves(self):
