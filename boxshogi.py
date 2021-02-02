@@ -28,7 +28,6 @@ def game(game_mode='i', file_input=None):
         last_command = ""
         for command in file_input['moves']:
             last_command = command
-            showBoard(game)
             try:
                 instruction = getMove(command)
                 game.executeTurn(instruction)
