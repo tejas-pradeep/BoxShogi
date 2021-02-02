@@ -198,12 +198,14 @@ class Shield(Piece):
         moves = set()
         directions = [-1, 0, 1]
         backwards = -1 if self.type == 'lower' else 1
+        banned_moves = [(self.col + 1, self.row + backwards), (self.col - 1, self.row + backwards)]
         for i in directions:
             for j in directions:
-                if i != 0 or j != 0 and 0 <= self.row + i < 5 and 0 <= self.col + i < 5:
-                    if (i, j) != (-1, backwards) and (i, j) != (1, backwards):
-                        moves.add((self.col + i, self.row + j))
-        self.moves = list(moves)
+                if i == j == 0 or not checkBounds(self.col + i) or not checkBounds(self.row + j) or (self.col + i, self.row + j) in banned_moves:
+                    continue
+                moves.add((self.col + i, self.row + j))
+        moves = list(moves)
+        self.moves = moves
 
     def getMoves(self):
         return self.moves

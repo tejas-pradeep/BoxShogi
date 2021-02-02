@@ -105,6 +105,8 @@ class Game:
             self.is_check[opponent_drive.getPlayerType()] = (True, escape_moves)
             if not escape_moves:
                 self.checkmate()
+            return True
+        return False
 
     def checkmate(self):
         """
