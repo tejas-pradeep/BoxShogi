@@ -153,7 +153,7 @@ class Game:
         """
         if self.current_action == 'drop' and isinstance(piece, Preview):
             raise DropException("Cannot drop a preview piece into a checkmate.")
-        raise GameEnd(" {} player wins.  Checkmate".format(self.current))
+        raise GameEnd("{} player wins.  Checkmate.".format(self.current))
 
 
     def checkValidPromotion(self, origin, dest):

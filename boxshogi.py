@@ -36,7 +36,7 @@ def game(game_mode='i', file_input=None):
                 game.executeTurn(instruction)
             except (MoveException, WrongPlayerException, PositionOutofBoundsException, DropException) as e:
                 showBoard(game)
-                print("{} player wins. Illegal move".format(game.getPreviousPlayer()))
+                print("{} player wins. Illegal move.".format(game.getPreviousPlayer()))
                 quit()
             except GameEnd as e:
                 print("{} player action: {}".format(game.getCurrentPlayer(), command))
