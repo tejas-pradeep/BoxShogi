@@ -32,7 +32,7 @@ class Piece(metaclass=abc.ABCMeta):
         pass
 
     def promote(self):
-        pass
+        self.name = '+' + self.name
 
     def getPlayerType(self):
         return self.type
