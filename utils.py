@@ -43,7 +43,7 @@ def location_to_index(location):
     return col, row - 1
 
 def index_to_location(index):
-    return chr(ord('a') + index[0]), index[1] + 1
+    return str(chr(ord('a') + index[0])) + str(index[1] + 1)
 
 
 def checkBounds(origin, dest=None):

@@ -37,8 +37,10 @@ def isCheck(check_tuple, current_player):
     And a list at index 1 containing possible moves.
     """
     if check_tuple[0]:
-        print("\n {} player is in check!".format(current_player))
-        print("Available moves: {}".format(' '.join(check_tuple[1])))
+        print("\n{} player is in check!".format(current_player))
+        print("Available Moves: ")
+        for i in check_tuple[1]:
+            print(i)
 
 
 

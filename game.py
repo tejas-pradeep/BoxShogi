@@ -65,7 +65,7 @@ class Game:
                 if isinstance(origin_piece, Notes) or isinstance(origin_piece, Governanace):
                     origin_piece.updateMoves(self.board.getAllPieceLocations())
                 elif isinstance(origin_piece, Drive):
-                    origin_piece.updateMoves(self.board.getAllOpponentMoves(self.current), self.board.getOwnPieceLocations(self.current))
+                    origin_piece.updateMoves(self.board.getAllOpponentMoves(self.current), self.board.getActivePieceLocations(self.current))
                 else:
                     origin_piece.updateMoves()
                 origin_moves = origin_piece.getMoves()
@@ -87,7 +87,7 @@ class Game:
                 if isinstance(origin_piece, Notes) or isinstance(origin_piece, Governanace):
                     origin_piece.updateMoves(self.board.getAllPieceLocations())
                 elif isinstance(origin_piece, Drive):
-                    origin_piece.updateMoves(self.board.getAllOpponentMoves(self.current), self.board.getOwnPieceLocations(self.current))
+                    origin_piece.updateMoves(self.board.getAllOpponentMoves(self.current), self.board.getActivePieceLocations(self.current))
                 else:
                     origin_piece.updateMoves()
                 self.check_for_checks(origin_piece)
@@ -98,14 +98,15 @@ class Game:
 
     def check_for_checks(self, origin_piece):
         opponent_drive = self.board.getOpponentKing(self.current)
-        if opponent_drive.getLocation() in origin_piece.getMoves():
-            opponent_drive.updateMoves(self.board.getAllOpponentMoves(opponent_drive.getPlayerType()), self.board.getOwnPieceLocations(self.opponent))
-            escape_moves = opponent_drive.getMoves()
-            escape_moves.append(self.board.getCheckCaptureEscape(origin_piece.getLocation()))
+        if opponent_drive.getIndex() in origin_piece.getMoves():
+            opponent_drive.updateMoves(self.board.getAllOpponentMoves(opponent_drive.getPlayerType()), self.board.getActivePieceLocations(self.opponent))
+            escape_moves = ["move {} {}".format(index_to_location(opponent_drive.getIndex()), index_to_location(i)) for i in opponent_drive.getMoves()]
+            escape_moves += self.board.getCapturedEscapeMoves(origin_piece.getIndex(), self.opponent)
             self.is_check[opponent_drive.getPlayerType()] = (True, escape_moves)
-        self.isCheckmate(opponent_drive)
+            if not escape_moves:
+                self.checkmate()
 
-    def Checkmate(self):
+    def checkmate(self):
         """
         If opponenet king has no moves, it is a checkmate
         """
@@ -114,7 +115,7 @@ class Game:
 
 
     def checkValidPromotion(self, origin, dest):
-        promotion_row = {'lower' : 4, "UPPER" : 0}
+        promotion_row = {'lower': 4, "UPPER": 0}
         origin_piece = self.board.getPiece(origin)
         dest_index = location_to_index(dest)
         if dest_index[1] == promotion_row[origin_piece.getPlayerType()]:

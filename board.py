@@ -28,7 +28,7 @@ class Board:
     def _initEmptyBoard(self):
         board = [['' for i in range(5)] for j in range(5)]
         for i in self.lower_pieces + self.upper_pieces:
-            index = i.getLocation()
+            index = i.getIndex()
             board[index[0]][index[1]] = i
         return board
 
@@ -102,8 +102,6 @@ class Board:
         else:
             self.upper_pieces.remove(piece)
 
-
-
     def clear_pieces(self):
         self.lower_pieces = dict()
         self.upper_pieces = dict()
@@ -123,29 +121,41 @@ class Board:
     def getAllPieceLocations(self):
         locations = list()
         for i in self.lower_pieces + self.upper_pieces:
-            locations.append(i.getLocation())
+            locations.append(i.getIndex())
         return locations
 
-    def getOwnPieceLocations(self, current):
+    def getActivePieceLocations(self, player):
         current_player = {'lower': self.lower_pieces, 'UPPER': self.upper_pieces}
         blocked_location = set()
-        for i in current_player[current]:
-            blocked_location.add(i.getLocation())
+        for i in current_player[player]:
+            blocked_location.add(i.getIndex())
         return list(blocked_location)
 
 
-    def getAllOpponentMoves(self, current):
+    def getAllOpponentMoves(self, active_player):
         opponent = {'lower': self.upper_pieces, 'UPPER': self.lower_pieces}
         moves = set()
-        for i in opponent[current]:
+        for i in opponent[active_player]:
             moves.update(i.getMoves())
         return list(moves)
 
-    def getOpponentKing(self, current_player):
-        if current_player == 'lower':
+    def getOpponentKing(self, player):
+        if player == 'lower':
             return self.upper_drive
         else:
             return self.lower_drive
+
+    def getCapturedEscapeMoves(self, piece_location, player):
+        active_pieces = {'lower': self.lower_pieces, 'UPPER': self.upper_pieces}
+        capture_moves = set()
+        for i in active_pieces[player]:
+            i.updateMoves()
+            for j in i.getMoves():
+                if j == piece_location:
+                    capture_moves.add("move {} {}".format(index_to_location(i.getIndex()), index_to_location(j)))
+        return capture_moves
+
+
 
 
     def __repr__(self):

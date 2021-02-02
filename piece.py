@@ -43,7 +43,7 @@ class Piece(metaclass=abc.ABCMeta):
         else:
             return self.name.upper()
 
-    def getLocation(self):
+    def getIndex(self):
         return self.col, self.row
     def updateLocation(self, new_location):
         self.col = new_location[0]
