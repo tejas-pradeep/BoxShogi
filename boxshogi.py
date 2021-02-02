@@ -77,8 +77,8 @@ def main():
     """
     Main function to read terminal input
     """
-    # game('f', parseTestCase('test_cases/lowerStuckPreviewDrop.in'))
-    game('i')
+    # game('f', parseTestCase('test_cases/manyWaysOutOfCheck.in'))
+    # game('i')
     if sys.argv[1] == '-f':
         input = parseTestCase(sys.argv[2])
         game('f', input)

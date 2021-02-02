@@ -141,8 +141,9 @@ class Game:
         opponent_drive = self.board.getOpponentKing(self.current)
         if opponent_drive.getIndex() in origin_piece.getMoves():
             opponent_drive.updateMoves(self.board.getAllOpponentMoves(opponent_drive.getPlayerType()), self.board.getActivePieceLocations(self.opponent))
-            escape_moves = ["move {} {}".format(index_to_location(opponent_drive.getIndex()), index_to_location(i)) for i in opponent_drive.getMoves()]
+            escape_moves = self.board.getBlockMoves(origin_piece, self.opponent, opponent_drive)
             escape_moves += self.board.getCapturedEscapeMoves(origin_piece.getIndex(), self.opponent)
+            escape_moves += ["move {} {}".format(index_to_location(opponent_drive.getIndex()), index_to_location(i)) for i in opponent_drive.getMoves()]
             self.is_check[opponent_drive.getPlayerType()] = (True, escape_moves)
             if not escape_moves:
                 self.checkmate(origin_piece)

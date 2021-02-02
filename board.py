@@ -200,6 +200,51 @@ class Board:
                 if j == piece_location:
                     capture_moves.add("move {} {}".format(index_to_location(i.getIndex()), index_to_location(j)))
         return capture_moves
+    def getBlockMoves(self, attack_piece, attack_player, defend_king):
+        """
+        This method has two section.
+        1. Block the check with a drop move.
+        2. Block the check by moving an active piece.
+        isBetween is a util method that return tru if some test value is in between the two other arguments.
+        """
+        ### Setup: Getting the squares between the king and attacking piece
+        block_moves = list()
+        path_between_pieces = list()
+        drive_location = defend_king.getIndex()
+        attack_location = attack_piece.getIndex()
+        if isinstance(attack_piece, Notes):
+            for i in attack_piece.getMoves():
+                if i[0] == drive_location[0] and isBetween(i[1], attack_location[1], drive_location[1]):
+                    path_between_pieces.append(i)
+                if i[1] == drive_location[1] and isBetween(i[0], attack_location[0], drive_location[0]):
+                    path_between_pieces.append(i)
+        elif isinstance(attack_piece, Governanace):
+            for i in attack_piece.getMoves():
+                if isBetween(i[0], attack_location[0], drive_location[0]) and isBetween(i[1], attack_location[1], drive_location[1]):
+                    path_between_pieces.append(i)
+        else:
+            return []
+
+        ### 1. Drop Moves ###
+
+        captured_list = {'lower': self.lower_captured, 'UPPER': self.upper_captured}
+        for index in path_between_pieces:
+            for piece_name in captured_list[defend_king.getPlayerType()]:
+                block_moves.append("drop {} {}".format(piece_name.lower(), index_to_location(index)))
+
+        ### 2. Block by moving a piece ###
+
+        piece_list = {'lower': self.lower_pieces, 'UPPER': self.upper_pieces}
+        for piece in piece_list[defend_king.getPlayerType()]:
+            if isinstance(piece, Drive):
+                continue
+            for move in piece.getMoves():
+                if move in path_between_pieces:
+                    block_moves.append("move {} {}".format(index_to_location(piece.getIndex()), index_to_location(move)))
+
+        return block_moves
+
+
 
 
 

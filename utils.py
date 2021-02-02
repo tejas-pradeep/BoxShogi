@@ -76,4 +76,7 @@ def getMove(command):
 def sameTeam(str1, str2):
     return (str1.islower() and str2.islower()) or (str1.isupper() and str2.isupper())
 
+def isBetween(test, num1, num2):
+    return num1 < test < num2 or num2 < test < num1
+
 
