@@ -13,14 +13,17 @@ def game(game_mode='i', file_input=None):
                 isCheck(game.get_check_moves(), game.getCurrentPlayer())
                 command = input(game.current + ">")
                 print("{} player action: {}".format(game.current, command))
+                if game.isPlayerinCheck():
+                    if command not in game.get_check_moves()[1]:
+                        raise MoveException("Your move does not get you out of checks")
                 instruction = getMove(command)
                 game.executeTurn(instruction)
-            except GameEnd as e:
-                print(e)
-            except (MoveException, WrongPlayerException, PositionOutofBoundsException) as e:
+            except (MoveException, WrongPlayerException, PositionOutofBoundsException, DropException) as e:
                 print("\n{} player wins. Illegal move".format(game.getCurrentPlayer()))
                 print("\nWhat went wrong: {}".format(str(e)))
                 quit()
+            except GameEnd as e:
+                print(e)
             except FileParseException as e:
                 print(e)
                 quit()
@@ -31,7 +34,7 @@ def game(game_mode='i', file_input=None):
             try:
                 instruction = getMove(command)
                 game.executeTurn(instruction)
-            except (MoveException, WrongPlayerException, PositionOutofBoundsException) as e:
+            except (MoveException, WrongPlayerException, PositionOutofBoundsException, DropException) as e:
                 showBoard(game)
                 print("\n{} player wins. Illegal move".format(game.getCurrentPlayer()))
                 quit()
@@ -73,11 +76,12 @@ def main():
     Main function to read terminal input
     """
     # game('f', parseTestCase('test_cases/blockOutOfCheck.in'))
-    if sys.argv[1] == '-f':
-        input = parseTestCase(sys.argv[2])
-        game('f', input)
-    if sys.argv[1] == '-i':
-        game('i')
+    game('i')
+    # if sys.argv[1] == '-f':
+    #     input = parseTestCase(sys.argv[2])
+    #     game('f', input)
+    # if sys.argv[1] == '-i':
+    #     game('i')
 
 
 if __name__ == "__main__":

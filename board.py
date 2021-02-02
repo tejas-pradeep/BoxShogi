@@ -130,6 +130,8 @@ class Board:
             return True
         except:
             return False
+    def drop(self, piece, index):
+        self._board[index[0]][index[1]] = piece
 
     def removePiece(self, piece, player):
         if player == 'lower':
@@ -239,3 +241,18 @@ class Board:
             return ' ' + sq + '|'
         if len(sq) == 2:
             return sq + '|'
+
+    @staticmethod
+    def createPieceFromName(name, player_type, index):
+        piece_type = name.lower()
+        if piece_type == 'p':
+            return Preview(player_type, index)
+        if piece_type == 'g':
+            return Governanace(player_type, index)
+        if piece_type == 's':
+            return Shield(player_type, index)
+        if piece_type == 'r':
+            return Relay(player_type, index)
+        if piece_type == 'n':
+            return Notes(player_type, index)
+        return None

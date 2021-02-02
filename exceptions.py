@@ -15,3 +15,6 @@ class FileParseException(Exception):
 class GameEnd(Exception):
     def __init__(self, message):
         super(GameEnd, self).__init__(message)
+class DropException(Exception):
+    def __init__(self, message):
+        super(DropException, self).__init__(message)

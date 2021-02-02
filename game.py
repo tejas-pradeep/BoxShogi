@@ -14,6 +14,7 @@ class Game:
         self.opponent = 'UPPER'
         self.num_turns = 0
         self.is_check = {'lower': (False, list()), "UPPER": (False, list())}
+        self.current_action = 'move'
 
     def getCurrentPlayer(self):
         return self.current
@@ -32,7 +33,9 @@ class Game:
         if self.num_turns >= 400:
             raise GameEnd("Tie game. Too many moves")
         cmd, origin, dest, promote = inst
+        self.current_action = cmd
         if cmd == 'move':
+            self.is_check[self.current] = (False, list())
             if not promote:
                 if self.checkValidPromotion(origin, dest) and isinstance(self.board.getPiece(origin), Preview):
                     raise MoveException("You did not specify the promote flag when your piece promoted.")
@@ -46,16 +49,21 @@ class Game:
                     flag = promoted_piece.promote()
                     if not flag:
                         raise MoveException("You tired to promote a piece that cannot be promoted!")
+        elif cmd == 'drop':
+            if promote:
+                raise DropException("You tried to promote a piece when dropping it.")
+            self.handle_drop(origin, dest)
+
 
 
         self.nextTurn()
 
     def handle_move(self, origin, dest):
         """
-        Method to move piecec from origin to destination
-        :param origin: origin square strign of length 2
+        Method to move piece from origin to destination
+        :param origin: origin square string of length 2
         :param dest: origin destination square of length 2
-        :return: True is sucess False is failure
+        :return: True is success False is failure
         """
         if checkBounds(origin, dest):
             origin_piece = self.board.getPiece(origin)
@@ -97,6 +105,36 @@ class Game:
         else:
             raise MoveException("Either origin or destination is out of bounds")
 
+    def handle_drop(self, piece_type, dest):
+        dest_index = location_to_index(dest)
+        dest_piece = self.board.getPiece(dest)
+        if dest_piece:
+            raise DropException("You tried to drop a piece to a location with another piece")
+        if self.current == 'lower':
+           current_captured = self.board.lower_captured
+           current_active = self.board.lower_pieces
+           promotion_zone = 4
+           piece_type = piece_type.lower()
+        else:
+            current_captured = self.board.upper_captured
+            current_active = self.board.upper_pieces
+            promotion_zone = 0
+            piece_type = piece_type.upper()
+        piece_type = piece_type if piece_type in current_captured else '+' + piece_type
+        if piece_type not in current_captured:
+            raise DropException("You tried to drop a piece you have not captured.")
+        current_captured.remove(piece_type)
+        piece = Board.createPieceFromName(piece_type[-1], self.current, dest_index)
+        if isinstance(piece, Preview):
+            for i in current_active:
+                if isinstance(i, Preview) and dest_index[0] == i.getIndex()[0]:
+                    raise DropException("Tried to drop a preview piece into a column with another preview.")
+            if dest_index[1] == promotion_zone:
+                raise DropException("You tried to drop a preview ont a spot that results in promotion.")
+        current_active.append(piece)
+        self.board.drop(piece, dest_index)
+        self.check_for_checks(piece)
+
     def check_for_checks(self, origin_piece):
         opponent_drive = self.board.getOpponentKing(self.current)
         if opponent_drive.getIndex() in origin_piece.getMoves():
@@ -105,14 +143,16 @@ class Game:
             escape_moves += self.board.getCapturedEscapeMoves(origin_piece.getIndex(), self.opponent)
             self.is_check[opponent_drive.getPlayerType()] = (True, escape_moves)
             if not escape_moves:
-                self.checkmate()
+                self.checkmate(origin_piece)
             return True
         return False
 
-    def checkmate(self):
+    def checkmate(self, piece):
         """
         If opponenet king has no moves, it is a checkmate
         """
+        if self.current_action == 'drop' and isinstance(piece, Preview):
+            raise DropException("Cannot drop a preview piece into a checkmate.")
         raise GameEnd("{} player wins. Checkmate".format(self.current))
 
 
@@ -124,9 +164,6 @@ class Game:
             return True
         return False
 
-
-
-
     def nextTurn(self):
         if self.current == "lower":
             self.current = "UPPER"
@@ -135,6 +172,10 @@ class Game:
             self.current = "lower"
             self.opponent = 'UPPER'
         self.num_turns += 1
+
+    def isPlayerinCheck(self):
+        return self.is_check[self.current][0]
+
 
 
 
