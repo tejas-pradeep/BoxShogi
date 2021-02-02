@@ -113,7 +113,7 @@ class Game:
         """
         If opponenet king has no moves, it is a checkmate
         """
-        raise GameEnd("\n {} player wins. Checkmate".format(self.current))
+        raise GameEnd("{} player wins. Checkmate".format(self.current))
 
 
     def checkValidPromotion(self, origin, dest):

@@ -171,6 +171,7 @@ class Board:
         opponent = {'lower': self.upper_pieces, 'UPPER': self.lower_pieces}
         moves = set()
         for i in opponent[active_player]:
+            i.updateMoves()
             moves.update(i.getMoves())
         return list(moves)
 

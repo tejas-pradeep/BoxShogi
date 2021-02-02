@@ -1,7 +1,6 @@
 import sys
 from utils import *
 from game import Game
-from board import Board
 from exceptions import *
 
 
@@ -35,15 +34,14 @@ def game(game_mode='i', file_input=None):
             except GameEnd as e:
                 print("{} player action: {}".format(game.getCurrentPlayer(), command))
                 showBoard(game)
-                print(e)
+                print("{}".format(str(e)))
                 quit()
             except (MoveException, WrongPlayerException, PositionOutofBoundsException) as e:
                 showBoard(game)
                 print("\n{} player wins. Illegal move".format(game.getCurrentPlayer()))
-                print("\nWhat went wrong: {}".format(str(e)))
                 quit()
             except FileParseException as e:
-                print(e)
+                print("{}".format(str(e)))
                 quit()
         print("{} player action: {}".format(game.getPreviousPlayer(), last_command))
         showBoard(game)
@@ -74,7 +72,7 @@ def main():
     """
     Main function to read terminal input
     """
-    game('f', parseTestCase('test_cases/captureOutOfCheck.in'))
+    game('f', parseTestCase('test_cases/checkmate.in'))
     # if sys.argv[1] == '-f':
     #     input = parseTestCase(sys.argv[2])
     #     game('f', input)
