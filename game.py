@@ -101,7 +101,9 @@ class Game:
                     origin_piece.updateMoves(self.board.getAllOpponentMoves(self.current), self.board.getActivePieceLocations(self.current))
                 else:
                     origin_piece.updateMoves()
-                self.check_for_checks(origin_piece)
+                ret_value = self.check_for_checks(origin_piece)
+                if ret_value == 'checkmate':
+                    raise GameEnd("{} player wins.  Checkmate.".format(self.current))
             else:
                 raise MoveException("No piece at origin square {}".format(origin))
         else:
@@ -166,7 +168,8 @@ class Game:
         promotion_row = {'lower': 4, "UPPER": 0}
         origin_piece = self.board.getPiece(origin)
         dest_index = location_to_index(dest)
-        if dest_index[1] == promotion_row[origin_piece.getPlayerType()]:
+        origin_index = location_to_index(origin)
+        if dest_index[1] == promotion_row[origin_piece.getPlayerType()] or origin_index[1] == promotion_row[origin_piece.getPlayerType()]:
             return True
         return False
 
