@@ -133,9 +133,11 @@ class Game:
                 raise DropException("You tried to drop a preview ont a spot that results in promotion.")
         piece = Board.createPieceFromName(piece_type[-1], self.current, dest_index)
         current_active.append(piece)
+        ret_value = self.check_for_checks(piece)
         self.board.drop(piece, dest_index)
-        self.check_for_checks(piece)
         current_captured.remove(piece_type)
+        if ret_value == 'checkmate':
+            raise GameEnd("{} player wins.  Checkmate.".format(self.current))
 
     def check_for_checks(self, origin_piece):
         opponent_drive = self.board.getOpponentKing(self.current)
@@ -147,7 +149,7 @@ class Game:
             escape_moves.sort()
             self.is_check[opponent_drive.getPlayerType()] = (True, escape_moves)
             if not escape_moves:
-                self.checkmate(origin_piece)
+                return self.checkmate(origin_piece)
             return True
         return False
 
@@ -157,7 +159,7 @@ class Game:
         """
         if self.current_action == 'drop' and isinstance(piece, Preview):
             raise DropException("Cannot drop a preview piece into a checkmate.")
-        raise GameEnd("{} player wins.  Checkmate.".format(self.current))
+        return 'checkmate'
 
 
     def checkValidPromotion(self, origin, dest):
