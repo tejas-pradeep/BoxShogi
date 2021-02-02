@@ -153,9 +153,11 @@ class Board:
             return piece_at_location
         return None
 
-    def getAllPieceLocations(self):
+    def getAllPieceLocations(self, remove_drive=None):
         locations = list()
         for i in self.lower_pieces + self.upper_pieces:
+            if i == remove_drive:
+                continue
             locations.append(i.getIndex())
         return locations
 
@@ -169,9 +171,13 @@ class Board:
 
     def getAllOpponentMoves(self, active_player):
         opponent = {'lower': self.upper_pieces, 'UPPER': self.lower_pieces}
+        active_drive = {'lower': self.lower_drive, 'UPPER': self.upper_drive}
         moves = set()
         for i in opponent[active_player]:
-            i.updateMoves()
+            if isinstance(i, Notes) or isinstance(i, Governanace):
+                i.updateMoves(self.getAllPieceLocations(active_drive[active_player]))
+            else:
+                i.updateMoves()
             moves.update(i.getMoves())
         return list(moves)
 

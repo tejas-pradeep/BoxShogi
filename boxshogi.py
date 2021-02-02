@@ -28,17 +28,18 @@ def game(game_mode='i', file_input=None):
         last_command = ""
         for command in file_input['moves']:
             last_command = command
+            showBoard(game)
             try:
                 instruction = getMove(command)
                 game.executeTurn(instruction)
+            except (MoveException, WrongPlayerException, PositionOutofBoundsException) as e:
+                showBoard(game)
+                print("\n{} player wins. Illegal move".format(game.getCurrentPlayer()))
+                quit()
             except GameEnd as e:
                 print("{} player action: {}".format(game.getCurrentPlayer(), command))
                 showBoard(game)
                 print("{}".format(str(e)))
-                quit()
-            except (MoveException, WrongPlayerException, PositionOutofBoundsException) as e:
-                showBoard(game)
-                print("\n{} player wins. Illegal move".format(game.getCurrentPlayer()))
                 quit()
             except FileParseException as e:
                 print("{}".format(str(e)))
@@ -72,7 +73,7 @@ def main():
     """
     Main function to read terminal input
     """
-    game('f', parseTestCase('test_cases/checkmate.in'))
+    game('f', parseTestCase('test_cases/doubleCheck.in'))
     # if sys.argv[1] == '-f':
     #     input = parseTestCase(sys.argv[2])
     #     game('f', input)
