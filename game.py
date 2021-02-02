@@ -36,11 +36,13 @@ class Game:
         self.current_action = cmd
         if cmd == 'move':
             self.is_check[self.current] = (False, list())
+            if self.checkValidPromotion(origin, dest) and isinstance(self.board.getPiece(origin), Preview):
+               promote = True
             if not promote:
-                if self.checkValidPromotion(origin, dest) and isinstance(self.board.getPiece(origin), Preview):
-                    raise MoveException("You did not specify the promote flag when your piece promoted.")
                 self.handle_move(origin, dest)
             else:
+                if isinstance(self.board.getPiece(origin), Drive):
+                    raise MoveException("You tired to promote the drive")
                 if not self.checkValidPromotion(origin, dest):
                     raise MoveException("You added in the promote flag when the move {} to {} does not have a promotion".format(origin, dest))
                 self.handle_move(origin, dest)
@@ -123,14 +125,14 @@ class Game:
         piece_type = piece_type if piece_type in current_captured else '+' + piece_type
         if piece_type not in current_captured:
             raise DropException("You tried to drop a piece you have not captured.")
-        current_captured.remove(piece_type)
-        piece = Board.createPieceFromName(piece_type[-1], self.current, dest_index)
-        if isinstance(piece, Preview):
+        if piece_type.lower() == 'p':
             for i in current_active:
                 if isinstance(i, Preview) and dest_index[0] == i.getIndex()[0]:
                     raise DropException("Tried to drop a preview piece into a column with another preview.")
             if dest_index[1] == promotion_zone:
                 raise DropException("You tried to drop a preview ont a spot that results in promotion.")
+        current_captured.remove(piece_type)
+        piece = Board.createPieceFromName(piece_type[-1], self.current, dest_index)
         current_active.append(piece)
         self.board.drop(piece, dest_index)
         self.check_for_checks(piece)

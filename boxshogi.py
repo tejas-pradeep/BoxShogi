@@ -30,11 +30,13 @@ def game(game_mode='i', file_input=None):
     elif game_mode == 'f':
         last_command = ""
         for command in file_input['moves']:
+            # showBoard(game)
             last_command = command
             try:
                 instruction = getMove(command)
                 game.executeTurn(instruction)
             except (MoveException, WrongPlayerException, PositionOutofBoundsException, DropException) as e:
+                print("{} player action: {}".format(game.getPreviousPlayer(), last_command))
                 showBoard(game)
                 print("{} player wins. Illegal move.".format(game.getPreviousPlayer()))
                 quit()
@@ -75,8 +77,8 @@ def main():
     """
     Main function to read terminal input
     """
-    # game('f', parseTestCase('test_cases/blockOutOfCheck.in'))
-    # game('i')
+    # game('f', parseTestCase('test_cases/lowerStuckPreviewDrop.in'))
+    game('i')
     if sys.argv[1] == '-f':
         input = parseTestCase(sys.argv[2])
         game('f', input)

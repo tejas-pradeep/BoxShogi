@@ -123,9 +123,9 @@ class Board:
             if isinstance(self._board[d[0]][d[1]], Piece):
                 captured = self.getPiece(dest)
                 if captured.getPlayerType().islower():
-                    self.upper_captured.append(captured.toString().upper())
+                    self.upper_captured.append(captured.toString()[-1].upper())
                 else:
-                    self.lower_captured.append(captured.toString().lower())
+                    self.lower_captured.append(captured.toString()[-1].lower())
             self.move(origin, dest)
             return True
         except:
