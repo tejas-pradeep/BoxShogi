@@ -45,7 +45,7 @@ def game(game_mode='i', file_input=None):
             except FileParseException as e:
                 print(e)
                 quit()
-        print("{} player action: {}".format(game.getCurrentPlayer(), last_command))
+        print("{} player action: {}".format(game.getPreviousPlayer(), last_command))
         showBoard(game)
         isCheck(game.get_check_moves(), game.getCurrentPlayer())
         print("{}>".format(game.getCurrentPlayer()))

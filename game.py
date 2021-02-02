@@ -17,6 +17,8 @@ class Game:
 
     def getCurrentPlayer(self):
         return self.current
+    def getPreviousPlayer(self):
+        return self.opponent
 
     def get_check_moves(self):
         return self.is_check[self.getCurrentPlayer()]
