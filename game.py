@@ -62,9 +62,7 @@ class Game:
 
     def executeTurn(self, inst):
         """
-        Executes a move or a drop
-        :param inst: instruction from command line input
-        :throws: GameEnd when the game ends with the desired message.
+        Method executes
         """
         cmd, origin, dest, promote = inst
         self.current_action = cmd
@@ -217,7 +215,7 @@ class Game:
         else:
             self.num_turns += 1
             if self.num_turns >= 200:
-                raise GameEnd("Tie game.  Too many moves")
+                raise GameEnd("Tie game.  Too many moves.")
             self.current = "lower"
             self.opponent = 'UPPER'
 
