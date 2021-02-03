@@ -62,17 +62,28 @@ class Game:
 
     def executeTurn(self, inst):
         """
-        Method executes
+        Method executes a player turn.
+        It checks for promotion and drop illegal moves.
+        Calls methods handleMove() and handleDrop() to implement a move or a drop.
+
+        Args:
+            inst (tuple): A tuple that contains command (move or drop), origin location, destination location, promote: A boolean is promote flag is given.
+
+        Raises:
+            MoveException: When any illegal action is taken for a move command.
+            DropException: When any illegal action is taken for a drop command.
+            WrongPlayerException: When player tries to move the piece of the opposite player.
+            GameEnd: When the game ends in either a tie or a checkmate.
         """
         cmd, origin, dest, promote = inst
         self.current_action = cmd
         if cmd == 'move':
-            self.is_check[self.current] = (False, list())
+            self.refreshCheck()
+            # Even if promote flag is not specified, Preview promotes by default on the last row.
             if self.checkValidPromotion(origin, dest) and isinstance(self.board.getPiece(origin), Preview):
                promote = True
-            if not promote:
-                self.handle_move(origin, dest)
-            else:
+            # Checking for promotion illegal moves
+            if promote:
                 piece = self.board.getPiece(origin)
                 if piece.isPromote:
                     raise MoveException("You tried to promote a piece that is already promoted.")
@@ -80,27 +91,29 @@ class Game:
                     raise MoveException("You tired to promote a piece that cannot be promoted.")
                 if not self.checkValidPromotion(origin, dest):
                     raise MoveException("You added in the promote flag when the move {} to {} does not have a promotion".format(origin, dest))
-                self.handle_move(origin, dest)
-                promoted_piece = self.board.getPiece(dest)
-                if isinstance(promoted_piece, Piece):
-                    flag = promoted_piece.promote()
-                    if not flag:
-                        raise MoveException("You tired to promote a piece that cannot be promoted!")
+            self.handleMove(origin, dest)
         elif cmd == 'drop':
             if promote:
                 raise DropException("You tried to promote a piece when dropping it.")
-            self.handle_drop(origin, dest)
-
-
-
+            self.handleDrop(origin, dest)
         self.nextTurn()
 
-    def handle_move(self, origin, dest):
+    def handleMove(self, origin, dest):
         """
-        Method to move piece from origin to destination
-        :param origin: origin square string of length 2
-        :param dest: origin destination square of length 2
-        :return: True is success False is failure
+        Method to move piece from origin to destination.
+        Method checks for illegal actions on trying to move a piece.
+        Method calls util function location_to_index() that converts a square location. like a1 to its index (0, 0)
+        method calls util function sameteam() which checks if the two arguments are on the same team.
+
+        Args:
+            origin (str): Piece origin square string. The location is a square on the board like a3.
+            dest (str): piece destination square. the location is a square on the board like a3.
+
+        Raises:
+            WrongPlayerException: When player tires to move the other player's piece.
+            MoveException: When players takes an illegal action when trying to move the piece.
+
+
         """
         if checkBounds(origin, dest):
             origin_piece = self.board.getPiece(origin)
@@ -119,10 +132,6 @@ class Game:
                 if dest_index not in origin_moves:
                     raise MoveException("You tried to move a piece to a location it cant reach on this turn.")
                 if dest_piece is None:
-                    """
-                    Move piece
-                    """
-
                     self.board.move(origin, dest)
                 elif sameTeam(origin_piece.getPlayerType(), dest_piece.getPlayerType()):
                     raise MoveException("Both origin and destination is owned by you")
@@ -144,7 +153,7 @@ class Game:
         else:
             raise MoveException("Either origin or destination is out of bounds")
 
-    def handle_drop(self, piece_type, dest):
+    def handleDrop(self, piece_type, dest):
         dest_index = location_to_index(dest)
         dest_piece = self.board.getPiece(dest)
         if dest_piece:
@@ -177,7 +186,7 @@ class Game:
             raise GameEnd("{} player wins.  Checkmate.".format(self.current))
 
     def check_for_checks(self, origin_piece):
-        opponent_drive = self.board.getOpponentKing(self.current)
+        opponent_drive = self.board.getDrive(self.opponent)
         if opponent_drive.getIndex() in origin_piece.getMoves():
             opponent_drive.updateMoves(self.board.getAllOpponentMoves(opponent_drive.getPlayerType()), self.board.getActivePieceLocations(self.opponent))
             escape_moves = self.board.getBlockMoves(origin_piece, self.opponent, opponent_drive)
@@ -189,7 +198,6 @@ class Game:
                 return self.checkmate(origin_piece)
             return True
         return False
-
     def checkmate(self, piece):
         """
         If opponenet king has no moves, it is a checkmate
@@ -221,6 +229,9 @@ class Game:
 
     def isPlayerinCheck(self):
         return self.is_check[self.current][0]
+
+    def refreshCheck(self):
+        self.is_check[self.current] = (False, list())
 
 
 

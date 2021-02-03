@@ -183,11 +183,11 @@ class Board:
             moves.update(i.getMoves())
         return list(moves)
 
-    def getOpponentKing(self, player):
+    def getDrive(self, player):
         if player == 'lower':
-            return self.upper_drive
-        else:
             return self.lower_drive
+        else:
+            return self.upper_drive
 
     def getCapturedEscapeMoves(self, piece_location, player):
         active_pieces = {'lower': self.lower_pieces, 'UPPER': self.upper_pieces}
@@ -200,6 +200,7 @@ class Board:
                 if j == piece_location:
                     capture_moves.add("move {} {}".format(index_to_location(i.getIndex()), index_to_location(j)))
         return capture_moves
+
     def getBlockMoves(self, attack_piece, attack_player, defend_king):
         """
         This method has two section.
@@ -243,11 +244,6 @@ class Board:
                     block_moves.append("move {} {}".format(index_to_location(piece.getIndex()), index_to_location(move)))
 
         return block_moves
-
-
-
-
-
 
     def __repr__(self):
         return self._stringifyBoard()

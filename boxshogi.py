@@ -32,7 +32,7 @@ def game(game_mode='i', file_input=None):
                 print("\n{} player wins.  Illegal move".format(game.getPreviousPlayer()))
                 print("\nWhat went wrong: {}".format(str(e)))
                 quit()
-            except (Checkmate, TieGame) as e:
+            except GameEnd as e:
                 # GameEnd is thrown when the game ends with a checkmate or a tie
                 print(e)
             except FileParseException as e:
