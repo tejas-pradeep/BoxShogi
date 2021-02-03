@@ -73,8 +73,8 @@ def showBoard(game):
         game (Game): Game object that contains the current game state.
     """
     print(game.board)
-    print("Captures UPPER: {}".format(" " .join(game.board.upper_captured)))
-    print("Captures lower: {}\n".format(' '.join(game.board.lower_captured)))
+    print("Captures UPPER: {}".format(" " .join(game.board.getUpperPlayer().getCaptured())))
+    print("Captures lower: {}\n".format(' '.join(game.board.getLowerPlayer().getCaptured())))
 
 def printCheck(check_tuple, current_player):
     """
@@ -97,7 +97,7 @@ def main():
     Main function to read terminal input
     Calls method parseTestCase() from utils that takes in file path and returns a dictionary of the file data.
     """
-    # game('f', parseTestCase('test_cases/promoteLeavingZone.in'))
+    # game('f', parseTestCase('test_cases/manyWaysOutOfCheck.in'))
     # game('i')
     if sys.argv[1] == '-f':
         input = parseTestCase(sys.argv[2])

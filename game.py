@@ -127,7 +127,7 @@ class Game:
                 if isinstance(origin_piece, Notes) or isinstance(origin_piece, Governanace):
                     origin_piece.updateMoves(self.board.getAllPieceLocations())
                 elif isinstance(origin_piece, Drive):
-                    origin_piece.updateMoves(self.board.getAllOpponentMoves(self.current), self.board.getActivePieceLocations(self.current))
+                    origin_piece.updateMoves(self.board.getAllMoves(self.opponent), self.board.getActivePieceLocations(self.current))
                 else:
                     origin_piece.updateMoves()
                 origin_moves = origin_piece.getMoves()
@@ -145,7 +145,7 @@ class Game:
                 if isinstance(origin_piece, Notes) or isinstance(origin_piece, Governanace):
                     origin_piece.updateMoves(self.board.getAllPieceLocations())
                 elif isinstance(origin_piece, Drive):
-                    origin_piece.updateMoves(self.board.getAllOpponentMoves(self.current), self.board.getActivePieceLocations(self.current))
+                    origin_piece.updateMoves(self.board.getAllMoves(self.opponent), self.board.getActivePieceLocations(self.current))
                 else:
                     origin_piece.updateMoves()
                 ret_value = self.check_for_checks(origin_piece)
@@ -162,13 +162,13 @@ class Game:
         if dest_piece:
             raise DropException("You tried to drop a piece to a location with another piece")
         if self.current == 'lower':
-           current_captured = self.board.lower_captured
-           current_active = self.board.lower_pieces
+           current_captured = self.board.getLowerPlayer().getCaptured()
+           current_active = self.board.getLowerPlayer().getPieces()
            promotion_zone = 4
            piece_type = piece_type.lower()
         else:
-            current_captured = self.board.upper_captured
-            current_active = self.board.upper_pieces
+            current_captured = self.board.getUpperPlayer().getCaptured()
+            current_active = self.board.getUpperPlayer().getPieces()
             promotion_zone = 0
             piece_type = piece_type.upper()
         piece_type = piece_type if piece_type in current_captured else '+' + piece_type
@@ -189,10 +189,10 @@ class Game:
             raise GameEnd("{} player wins.  Checkmate.".format(self.current))
 
     def check_for_checks(self, origin_piece):
-        opponent_drive = self.board.getDrive(self.opponent)
+        opponent_drive = self.board.getPlayerDrive(self.opponent)
         if opponent_drive.getIndex() in origin_piece.getMoves():
-            opponent_drive.updateMoves(self.board.getAllOpponentMoves(opponent_drive.getPlayerType()), self.board.getActivePieceLocations(self.opponent))
-            escape_moves = self.board.getBlockMoves(origin_piece, self.opponent, opponent_drive)
+            opponent_drive.updateMoves(self.board.getAllMoves(opponent_drive.getPlayerType()), self.board.getActivePieceLocations(self.opponent))
+            escape_moves = self.board.getBlockMoves(origin_piece, opponent_drive)
             escape_moves += self.board.getCapturedEscapeMoves(origin_piece.getIndex(), self.opponent)
             escape_moves += ["move {} {}".format(index_to_location(opponent_drive.getIndex()), index_to_location(i)) for i in opponent_drive.getMoves()]
             escape_moves.sort()

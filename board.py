@@ -2,6 +2,7 @@ import os
 from utils import *
 from piece import *
 from exceptions import FileParseException
+from player import Player
 BOARD_SIZE = 5
 
 
@@ -14,37 +15,39 @@ class Board:
     BOARD_SIZE = 5
 
     def __init__(self, game_mode, file_input=None):
-        self.upper_captured = list()
-        self.lower_captured = list()
-        self.lower_drive = Drive('lower', (0, 0))
-        self.upper_drive = Drive('UPPER', (4, 4))
-        self.upper_pieces = list()
-        self.lower_pieces = list()
+        self.lower_player = Player('lower')
+        self.upper_player = Player('UPPER')
+        self.players = {'lower': self.lower_player, 'UPPER': self.upper_player}
         if game_mode == 'f':
             self._initFilePieces(file_input)
             self._board = self._initBoard()
         else:
-            self.upper_pieces = self.createUpperPieces()
-            self.lower_pieces = self.createLowerPieces()
+            self.createUpperPieces()
+            self.createLowerPieces()
             self._board = self._initBoard()
         self.initializeSpecialPieces()
 
+    def getLowerPlayer(self):
+        return self.lower_player
+    def getUpperPlayer(self):
+        return self.upper_player
+
     def _initBoard(self):
         board = [['' for i in range(5)] for j in range(5)]
-        for i in self.lower_pieces + self.upper_pieces:
+        for i in self.lower_player.getPieces() + self.upper_player.getPieces():
             index = i.getIndex()
             board[index[0]][index[1]] = i
         return board
 
     def _initFilePieces(self, file_input):
         piece_dict = {
-            'd': self.lower_drive,
+            'd': self.lower_player.getDrive(),
             'n': Notes('lower', (0, 0)),
             's': Shield('lower', (0, 0)),
             'r': Relay('lower', (0, 0)),
             'g': Governanace('lower', (0, 0)),
             'p': Preview('lower', (0, 0)),
-            'D': self.upper_drive,
+            'D': self.upper_player.getDrive(),
             'N': Notes('UPPER', (0, 0)),
             'S': Shield('UPPER', (0, 0)),
             'R': Relay('UPPER', (0, 0)),
@@ -59,39 +62,39 @@ class Board:
                 piece = piece_dict[i['piece']]
                 piece.updateLocation(location_to_index(i['position']))
                 if piece.getPlayerType() == 'lower':
-                    self.lower_pieces.append(piece)
+                    self.lower_player.addPiece(piece)
                 else:
-                    self.upper_pieces.append(piece)
-            self.upper_captured = file_input['upperCaptures']
-            self.lower_captured = file_input['lowerCaptures']
+                    self.upper_player.addPiece(piece)
+            self.upper_player.setCaptured(file_input['upperCaptures'])
+            self.lower_player.setCaptured(file_input['lowerCaptures'])
         except:
             raise FileParseException("Error while parsing input file.")
 
     def createLowerPieces(self):
         lower_pieces = [
-            self.lower_drive,
+            self.lower_player.getDrive(),
             Shield('lower', (1, 0)),
             Relay('lower', (2, 0)),
             Governanace('lower', (3, 0)),
             Notes('lower', (4, 0)),
             Preview('lower', (0, 1))
         ]
-        return lower_pieces
+        self.lower_player.setPieces(lower_pieces)
 
     def createUpperPieces(self):
         upper_pieces = [
-            self.upper_drive,
+            self.upper_player.getDrive(),
             Notes('UPPER', (0, 4)),
             Governanace('UPPER', (1, 4)),
             Relay('UPPER', (2, 4)),
             Shield("UPPER", (3, 4)),
             Preview("UPPER", (4, 3))
         ]
-        return upper_pieces
+        self.upper_player.setPieces(upper_pieces)
 
     def initializeSpecialPieces(self):
         all_pieces_location = self.getAllPieceLocations()
-        for i in self.lower_pieces + self.upper_pieces:
+        for i in self.lower_player.getPieces() + self.upper_player.getPieces():
             if isinstance(i, Notes) or isinstance(i, Governanace):
                 i.updateMoves(all_pieces_location)
 
@@ -123,25 +126,22 @@ class Board:
             if isinstance(self._board[d[0]][d[1]], Piece):
                 captured = self.getPiece(dest)
                 if captured.getPlayerType().islower():
-                    self.upper_captured.append(captured.toString()[-1].upper())
+                    self.upper_player.addCapture(captured.toString()[-1].upper())
                 else:
-                    self.lower_captured.append(captured.toString()[-1].lower())
+                    self.lower_player.addCapture(captured.toString()[-1].lower())
             self.move(origin, dest)
             return True
         except:
             return False
+
     def drop(self, piece, index):
         self._board[index[0]][index[1]] = piece
 
     def removePiece(self, piece, player):
         if player == 'lower':
-            self.lower_pieces.remove(piece)
+            self.lower_player.removePiece(piece)
         else:
-            self.upper_pieces.remove(piece)
-
-    def clear_pieces(self):
-        self.lower_pieces = dict()
-        self.upper_pieces = dict()
+            self.upper_player.removePiece(piece)
 
     def getPiece(self, location) -> Piece:
         """
@@ -157,42 +157,35 @@ class Board:
 
     def getAllPieceLocations(self, remove_drive=None):
         locations = list()
-        for i in self.lower_pieces + self.upper_pieces:
+        for i in self.lower_player.getPieces() + self.upper_player.getPieces():
             if i == remove_drive:
                 continue
             locations.append(i.getIndex())
         return locations
 
     def getActivePieceLocations(self, player):
-        current_player = {'lower': self.lower_pieces, 'UPPER': self.upper_pieces}
         blocked_location = set()
-        for i in current_player[player]:
+        for i in self.players[player].getPieces():
             blocked_location.add(i.getIndex())
         return list(blocked_location)
 
 
-    def getAllOpponentMoves(self, active_player):
-        opponent = {'lower': self.upper_pieces, 'UPPER': self.lower_pieces}
-        active_drive = {'lower': self.lower_drive, 'UPPER': self.upper_drive}
+    def getAllMoves(self, player):
         moves = set()
-        for i in opponent[active_player]:
+        for i in self.players[player].getPieces():
             if isinstance(i, Notes) or isinstance(i, Governanace):
-                i.updateMoves(self.getAllPieceLocations(active_drive[active_player]))
+                i.updateMoves(self.getAllPieceLocations(self.players[player].getDrive()))
             else:
                 i.updateMoves()
             moves.update(i.getMoves())
         return list(moves)
 
-    def getDrive(self, player):
-        if player == 'lower':
-            return self.lower_drive
-        else:
-            return self.upper_drive
+    def getPlayerDrive(self, player):
+        return self.players[player].getDrive()
 
     def getCapturedEscapeMoves(self, piece_location, player):
-        active_pieces = {'lower': self.lower_pieces, 'UPPER': self.upper_pieces}
         capture_moves = set()
-        for i in active_pieces[player]:
+        for i in self.players[player].getPieces():
             if isinstance(i, Drive):
                 continue
             i.updateMoves()
@@ -201,7 +194,7 @@ class Board:
                     capture_moves.add("move {} {}".format(index_to_location(i.getIndex()), index_to_location(j)))
         return capture_moves
 
-    def getBlockMoves(self, attack_piece, attack_player, defend_king):
+    def getBlockMoves(self, attack_piece, defend_king):
         """
         This method has two section.
         1. Block the check with a drop move.
@@ -228,15 +221,13 @@ class Board:
 
         ### 1. Drop Moves ###
 
-        captured_list = {'lower': self.lower_captured, 'UPPER': self.upper_captured}
         for index in path_between_pieces:
-            for piece_name in captured_list[defend_king.getPlayerType()]:
+            for piece_name in self.players[defend_king.getPlayerType()].getCaptured():
                 block_moves.append("drop {} {}".format(piece_name.lower(), index_to_location(index)))
 
         ### 2. Block by moving a piece ###
 
-        piece_list = {'lower': self.lower_pieces, 'UPPER': self.upper_pieces}
-        for piece in piece_list[defend_king.getPlayerType()]:
+        for piece in self.players[defend_king.getPlayerType()].getPieces():
             if isinstance(piece, Drive):
                 continue
             for move in piece.getMoves():

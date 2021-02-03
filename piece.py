@@ -64,8 +64,7 @@ class Drive(Piece):
                         or (self.col + i, self.row + j) in check_moves:
                     continue
                 moves.add((self.col + i, self.row + j))
-        moves = list(moves)
-        self.moves = moves
+        self.moves = list(moves)
 
     def getMoves(self):
         return self.moves
