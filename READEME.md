@@ -37,6 +37,12 @@ Objects of its sub classes contain information on the piece's location, its move
 
 **Exceptions**: This file contains 5 custom exception that indicate different ways of the game ending. These exceptions are great to get a better understanding of what caused the game to end.
 
+See Design Class Diagram below
+
+![img.png](Design_Class_Diagram.png)
+
+If unable to see the image, please look at Design_Class_Diagram.png
+
 ### Performance
 
 There are some computationally expensive operations, like checking for and handling checks. But since the game is of limited size, board size of 5 and piece list of 12, these operations occur instantaneously.

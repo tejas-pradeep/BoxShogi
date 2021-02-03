@@ -4,6 +4,8 @@ from piece import *
 from exceptions import FileParseException
 from player import Player
 
+BOARD_SIZE = 5
+
 class Board:
     """
     Board class represents the current board state. All actions on the board happen through this class.
@@ -43,7 +45,7 @@ class Board:
         Returns:
             Matrix: A 5x5 matrix representing the game board.
         """
-        board = [['' for i in range(5)] for j in range(5)]
+        board = [['' for i in range(BOARD_SIZE)] for j in range(BOARD_SIZE)]
         for i in self.lower_player.getPieces() + self.upper_player.getPieces():
             index = i.getIndex()
             board[index[0]][index[1]] = i

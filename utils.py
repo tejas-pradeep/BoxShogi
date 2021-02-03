@@ -1,4 +1,5 @@
 from exceptions import PositionOutofBoundsException, MoveException
+from board import BOARD_SIZE
 
 def parseTestCase(path):
     """
@@ -39,7 +40,7 @@ def location_to_index(location):
     if len(location) != 2:
        raise PositionOutofBoundsException("Position has a length greater than 2")
     row = int(location[1])
-    if row < 1 or row > 5:
+    if row < 1 or row > BOARD_SIZE:
         raise PositionOutofBoundsException("Invalid location, square {} does not exist".format(location))
     col = ord(location[0].lower()) - 97
     if col < 0 or col > 4:
@@ -76,12 +77,12 @@ def checkBounds(origin, dest=None):
         bool: True if in bounds else False.
     """
     if dest is None:
-        return 5 > origin >= 0
+        return BOARD_SIZE > origin >= 0
     else:
         try:
             o = location_to_index(origin)
             d = location_to_index(dest)
-            return 5 > o[0] >= 0 and 5 > o[1] >= 0 and 5 > d[0] >= 0 and 5 > d[1] >= 0
+            return BOARD_SIZE > o[0] >= 0 and BOARD_SIZE > o[1] >= 0 and BOARD_SIZE > d[0] >= 0 and BOARD_SIZE > d[1] >= 0
         except PositionOutofBoundsException:
             return False
 

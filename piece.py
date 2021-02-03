@@ -1,6 +1,7 @@
 import abc
 #Check bounds is a method that checks if a given index is in bounds of the board
 from utils import checkBounds
+from board import BOARD_SIZE
 
 class Piece(metaclass=abc.ABCMeta):
     """
@@ -162,21 +163,21 @@ class Notes(Piece):
             if (self.col, self.row + i) in blocked_path:
                 break
         # vertically negetive moves
-        for i in range(1, 5):
+        for i in range(1, BOARD_SIZE):
             if not checkBounds(self.row - i):
                 break
             moves.add((self.col, self.row - i))
             if (self.col, self.row - i) in blocked_path:
                 break
         # horizontally positive moves
-        for i in range(1, 5):
+        for i in range(1, BOARD_SIZE):
             if not checkBounds(self.col + i):
                 break
             moves.add((self.col + i, self.row))
             if (self.col + i, self.row) in blocked_path:
                 break
         # horizontally negetive moves
-        for i in range(1, 5):
+        for i in range(1, BOARD_SIZE):
             if not checkBounds(self.col - i):
                 break
             moves.add((self.col - i, self.row))
@@ -220,7 +221,7 @@ class Governanace(Piece):
 
     def updateMoves(self, blocked_path=list()):
         """
-        Method updates the moevs of the governance(bishop).
+        Method updates the moves of the governance(bishop).
         The bishop can move in four directions, to account for blockages, I shall have four loops, each loop representing one of the directions.
 
         Args:
@@ -228,28 +229,28 @@ class Governanace(Piece):
         """
         moves = set()
         # direction: +col, +row
-        for i in range(1, 5):
+        for i in range(1, BOARD_SIZE):
             if not checkBounds(self.row + i) or not checkBounds(self.col + i):
                 break
             moves.add((self.col + i, self.row + i))
             if (self.col + i, self.row + i) in blocked_path:
                 break
         # direction: +col, -row
-        for i in range(1, 5):
+        for i in range(1, BOARD_SIZE):
             if not checkBounds(self.row - i) or not checkBounds(self.col + i):
                 break
             moves.add((self.col + i, self.row - i))
             if (self.col + i, self.row - i) in blocked_path:
                 break
         # direction: -col, -row
-        for i in range(1, 5):
+        for i in range(1, BOARD_SIZE):
             if not checkBounds(self.row - i) or not checkBounds(self.col - i):
                 break
             moves.add((self.col - i, self.row - i))
             if (self.col - i, self.row - i) in blocked_path:
                 break
         # direction: -col, +row
-        for i in range(1, 5):
+        for i in range(1, BOARD_SIZE):
             if not checkBounds(self.row + i) or not checkBounds(self.col - i):
                 break
             moves.add((self.col - i, self.row + i))
@@ -389,7 +390,7 @@ class Preview(Piece):
         else:
             # if not promoted preview can only move one square ahead.
             forward = 1 if self.player == 'lower' else -1
-            if self.row + forward < 5:
+            if self.row + forward < BOARD_SIZE:
                 self.moves = [(self.col, self.row + forward)]
 
     def getMoves(self):
