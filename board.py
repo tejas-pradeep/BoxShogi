@@ -172,9 +172,10 @@ class Board:
 
     def getAllMoves(self, player):
         moves = set()
+        opponent_player = 'UPPER' if player == 'lower' else 'lower'
         for i in self.players[player].getPieces():
             if isinstance(i, Notes) or isinstance(i, Governanace):
-                i.updateMoves(self.getAllPieceLocations(self.players[player].getDrive()))
+                i.updateMoves(self.getAllPieceLocations(self.players[opponent_player].getDrive()))
             else:
                 i.updateMoves()
             moves.update(i.getMoves())
