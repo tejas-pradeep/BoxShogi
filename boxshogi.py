@@ -32,7 +32,7 @@ def game(game_mode='i', file_input=None):
                 print("\n{} player wins.  Illegal move".format(game.getPreviousPlayer()))
                 print("\nWhat went wrong: {}".format(str(e)))
                 quit()
-            except GameEnd as e:
+            except (Checkmate, TieGame) as e:
                 # GameEnd is thrown when the game ends with a checkmate or a tie
                 print(e)
             except FileParseException as e:
@@ -97,7 +97,7 @@ def main():
     Main function to read terminal input
     Calls method parseTestCase() from utils that takes in file path and returns a dictionary of the file data.
     """
-    # game('f', parseTestCase('test_cases/promotedRelayPromotion.in'))
+    # game('f', parseTestCase('test_cases/tieGame.in'))
     # game('i')
     if sys.argv[1] == '-f':
         input = parseTestCase(sys.argv[2])

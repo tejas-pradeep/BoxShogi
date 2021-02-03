@@ -215,11 +215,11 @@ class Game:
             self.current = "UPPER"
             self.opponent = 'lower'
         else:
+            self.num_turns += 1
+            if self.num_turns >= 200:
+                raise GameEnd("Tie game.  Too many moves")
             self.current = "lower"
             self.opponent = 'UPPER'
-            self.num_turns += 1
-        if self.num_turns >= 200:
-            raise GameEnd("Tie game.  Too many moves")
 
     def isPlayerinCheck(self):
         return self.is_check[self.current][0]
