@@ -136,7 +136,7 @@ class Game:
                     raise MoveException("You tried to move a piece to a location it cant reach on this turn.")
                 if self.isPinned(origin_piece, dest_index):
                     raise MoveException("You tried to move a pinned piece.")
-                if sameTeam(origin_piece.getPlayerType(), dest_piece.getPlayerType()):
+                if dest_piece and sameTeam(origin_piece.getPlayerType(), dest_piece.getPlayerType()):
                     raise MoveException("Both origin and destination is owned by you")
                 # Move vs Capture
                 if dest_piece is None:
