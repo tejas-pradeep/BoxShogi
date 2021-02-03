@@ -237,6 +237,14 @@ class Board:
 
         return block_moves
 
+    def getNotesGovernanceMoves(self, player):
+        moves = []
+        for i in self.players[player].getPieces():
+            if isinstance(i, Notes) or isinstance(i, Governanace):
+                i.updateMoves()
+                moves.extend(i.getMoves())
+        return moves
+
     def __repr__(self):
         return self._stringifyBoard()
 

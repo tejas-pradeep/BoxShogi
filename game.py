@@ -134,6 +134,8 @@ class Game:
                 dest_index = location_to_index(dest)
                 if dest_index not in origin_moves:
                     raise MoveException("You tried to move a piece to a location it cant reach on this turn.")
+                if self.isPinned(origin_piece, dest_index):
+                    raise MoveException("You tried to move a pinned piece.")
                 if dest_piece is None:
                     self.board.move(origin, dest)
                 elif sameTeam(origin_piece.getPlayerType(), dest_piece.getPlayerType()):
@@ -190,7 +192,10 @@ class Game:
 
     def check_for_checks(self, origin_piece):
         opponent_drive = self.board.getPlayerDrive(self.opponent)
-        if opponent_drive.getIndex() in origin_piece.getMoves():
+        possible_checks = origin_piece.getMoves()
+        # Checking for discovered attacks.
+        possible_checks.extend(self.board.getNotesGovernanceMoves(self.current))
+        if opponent_drive.getIndex() in possible_checks:
             opponent_drive.updateMoves(self.board.getAllMoves(self.current), self.board.getActivePieceLocations(self.opponent))
             escape_moves = self.board.getBlockMoves(origin_piece, opponent_drive)
             escape_moves += self.board.getCapturedEscapeMoves(origin_piece.getIndex(), self.opponent)
@@ -209,13 +214,23 @@ class Game:
             raise DropException("Cannot drop a preview piece into a checkmate.")
         return 'checkmate'
 
-
     def checkValidPromotion(self, origin, dest):
         promotion_row = {'lower': 4, "UPPER": 0}
         origin_piece = self.board.getPiece(origin)
         dest_index = location_to_index(dest)
         origin_index = location_to_index(origin)
         if dest_index[1] == promotion_row[origin_piece.getPlayerType()] or origin_index[1] == promotion_row[origin_piece.getPlayerType()]:
+            return True
+
+        return False
+
+    def isPinned(self, piece, dest_index):
+        current_king = self.board.getPlayerDrive(self.current)
+        origin_index = piece.getIndex()
+        piece.updateLocation(dest_index)
+        possible_checks = self.board.getNotesGovernanceMoves(self.opponent)
+        piece.updateLocation(origin_index)
+        if current_king.getIndex() in possible_checks:
             return True
         return False
 
