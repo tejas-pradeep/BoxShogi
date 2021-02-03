@@ -180,16 +180,19 @@ class Game:
             current_captured = self.board.getUpperPlayer().getCaptured()
             current_active = self.board.getUpperPlayer().getPieces()
             promotion_zone = 0
-            piece_type = piece_type.upper()
+            piece_type = piece_type.upper()\
+        # If current piece type is not in captured list then checks if the promoted piece type is in captured list.
         piece_type = piece_type if piece_type in current_captured else '+' + piece_type
         if piece_type not in current_captured:
             raise DropException("You tried to drop a piece you have not captured.")
+        # Checks for illegal action while dropping a preview piece.
         if piece_type.lower() == 'p':
             for i in current_active:
                 if isinstance(i, Preview) and dest_index[0] == i.getIndex()[0]:
                     raise DropException("Tried to drop a preview piece into a column with another preview.")
             if dest_index[1] == promotion_zone:
                 raise DropException("You tried to drop a preview ont a spot that results in promotion.")
+
         piece = Board.createPieceFromName(piece_type[-1], self.current, dest_index)
         current_active.append(piece)
         ret_value = self.check_for_checks(piece)
@@ -199,6 +202,17 @@ class Game:
             raise GameEnd("{} player wins.  Checkmate.".format(self.current))
 
     def check_for_checks(self, origin_piece):
+        """
+        Method checks weather the opponent king is in check due to the current player's action.
+        If king is in check, it also retrieves the set of escape moves available to the king.
+
+        Args:
+            origin_piece (Piece): The current player's piece that has just been moved.
+
+        Returns:
+            boolean: True if the other player is in check else false
+            str: string('checkmate") if the check results in a checkmate.
+        """
         opponent_drive = self.board.getPlayerDrive(self.opponent)
         possible_checks = origin_piece.getMoves()
         # Checking for discovered attacks.
@@ -214,15 +228,36 @@ class Game:
                 return self.checkmate(origin_piece)
             return True
         return False
+
     def checkmate(self, piece):
         """
-        If opponenet king has no moves, it is a checkmate
+        Method checks if the checkmate is valid, ie did not occur by dropping a preview piece.
+
+        Args:
+            piece (Piece): Piece whose action resulted in a checkmate.
+
+        Returns:
+            str: 'checkmate" if its a valid checkmate.
+
+        Raises:
+            DropException: if the checkmate results from an illegal drop action.
         """
         if self.current_action == 'drop' and isinstance(piece, Preview):
             raise DropException("Cannot drop a preview piece into a checkmate.")
         return 'checkmate'
 
     def checkValidPromotion(self, origin, dest):
+        """
+        Method checks if piece at origin square can promote at destination square or at origin square.
+        Method calls util function location_to_index() that converts a square location. like a1 to its index (0, 0)
+
+        Args:
+            origin (str): Piece origin square string. The location is a square on the board like a3.
+            dest (str): piece destination square. the location is a square on the board like a3.
+
+        Returns:
+            bool: True if piece can promote this move, False if piece cannot promote this move.
+        """
         promotion_row = {'lower': 4, "UPPER": 0}
         origin_piece = self.board.getPiece(origin)
         dest_index = location_to_index(dest)
@@ -233,6 +268,17 @@ class Game:
         return False
 
     def isPinned(self, piece, dest_index):
+        """
+        Method checks if piece passed in as an argument is currently pinned.
+        Pinned: Term used when a piece moving results in a check to its own king.
+
+        Args:
+            piece (Piece): Current piece player is attempting to move.
+            dest_index (tuple): A tuple index representing destination location of the piece.
+
+        Returns:
+            bool: True if the piece is pinned, False if not.
+        """
         if isinstance(piece, Drive):
             return False
         current_king = self.board.getPlayerDrive(self.current)
@@ -245,10 +291,18 @@ class Game:
         return False
 
     def nextTurn(self):
+        """
+        Method transitions the game object to the next player's turn.
+
+        Raises:
+            GameEnd: If the turns reaches 200, then its a tie game.
+        """
         if self.current == "lower":
             self.current = "UPPER"
             self.opponent = 'lower'
         else:
+            # A turn is both players taking an action.
+            # Since game starts with lower player, a turn can only finish on an upper player's turn
             self.num_turns += 1
             if self.num_turns >= 200:
                 raise GameEnd("Tie game.  Too many moves.")
@@ -256,14 +310,31 @@ class Game:
             self.opponent = 'UPPER'
 
     def isPlayerinCheck(self):
+        """
+        Returns if current player is in check
+
+        Returns:
+            boo: True if current player is in check, else False
+        """
         return self.is_check[self.current][0]
 
     def refreshCheck(self):
+        """
+        Method refreshes the is_check attribute to its non-check value, (False, [])
+        """
         self.is_check[self.current] = (False, list())
 
     def updatePieceMoves(self, piece):
+        """
+        Method updates a passed in piece's moves.
+
+        Args:
+            piece (Piece): The piece whose moves are to be updated.
+        """
+        # Three cases since Notes and Governance need to account for blocks
         if isinstance(piece, Notes) or isinstance(piece, Governanace):
             piece.updateMoves(self.board.getAllPieceLocations())
+        #  Drive needs to account for checks.
         elif isinstance(piece, Drive):
             piece.updateMoves(self.board.getAllMoves(self.opponent),
                               self.board.getActivePieceLocations(self.current))
