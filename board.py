@@ -241,7 +241,7 @@ class Board:
         moves = []
         for i in self.players[player].getPieces():
             if isinstance(i, Notes) or isinstance(i, Governanace):
-                i.updateMoves()
+                i.updateMoves(self.getAllPieceLocations())
                 moves.extend(i.getMoves())
         return moves
 
