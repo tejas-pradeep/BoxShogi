@@ -191,7 +191,7 @@ class Game:
     def check_for_checks(self, origin_piece):
         opponent_drive = self.board.getPlayerDrive(self.opponent)
         if opponent_drive.getIndex() in origin_piece.getMoves():
-            opponent_drive.updateMoves(self.board.getAllMoves(opponent_drive.getPlayerType()), self.board.getActivePieceLocations(self.opponent))
+            opponent_drive.updateMoves(self.board.getAllMoves(self.current), self.board.getActivePieceLocations(self.opponent))
             escape_moves = self.board.getBlockMoves(origin_piece, opponent_drive)
             escape_moves += self.board.getCapturedEscapeMoves(origin_piece.getIndex(), self.opponent)
             escape_moves += ["move {} {}".format(index_to_location(opponent_drive.getIndex()), index_to_location(i)) for i in opponent_drive.getMoves()]
