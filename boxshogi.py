@@ -36,7 +36,7 @@ def game(game_mode='i', file_input=None):
                 # GameEnd is thrown when the game ends with a checkmate or a tie
                 print(e)
             except FileParseException as e:
-                print(e)
+                print("\nWhat went wrong: {}".format(str(e)))
                 quit()
     elif game_mode == 'f':
         last_command = ""
@@ -49,6 +49,7 @@ def game(game_mode='i', file_input=None):
                 print("{} player action: {}".format(game.getCurrentPlayer(), last_command))
                 showBoard(game)
                 print("{} player wins. Illegal move.".format(game.getPreviousPlayer()))
+                # print("\nWhat went wrong: {}".format(str(e)))
                 quit()
             except GameEnd as e:
                 print("{} player action: {}".format(game.getCurrentPlayer(), command))
