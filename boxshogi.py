@@ -97,7 +97,7 @@ def main():
     Main function to read terminal input
     Calls method parseTestCase() from utils that takes in file path and returns a dictionary of the file data.
     """
-    # game('f', parseTestCase('test_cases/blockOutOfCheck.in'))
+    # game('f', parseTestCase('test_cases/moveOutOfCheck.in'))
     # game('i')
     if sys.argv[1] == '-f':
         input = parseTestCase(sys.argv[2])

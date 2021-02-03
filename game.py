@@ -116,20 +116,15 @@ class Game:
             WrongPlayerException: When player tires to move the other player's piece.
             MoveException: When players takes an illegal action when trying to move the piece.
 
-
         """
         if checkBounds(origin, dest):
             origin_piece = self.board.getPiece(origin)
             dest_piece = self.board.getPiece(dest)
+
             if origin_piece and isinstance(origin_piece, Piece):
                 if not sameTeam(origin_piece.getPlayerType(), self.current):
                     raise WrongPlayerException("You tried to move the other player's piece.")
-                if isinstance(origin_piece, Notes) or isinstance(origin_piece, Governanace):
-                    origin_piece.updateMoves(self.board.getAllPieceLocations())
-                elif isinstance(origin_piece, Drive):
-                    origin_piece.updateMoves(self.board.getAllMoves(self.opponent), self.board.getActivePieceLocations(self.current))
-                else:
-                    origin_piece.updateMoves()
+                self.updatePieceMoves(origin_piece)
                 origin_moves = origin_piece.getMoves()
                 dest_index = location_to_index(dest)
                 if dest_index not in origin_moves:
@@ -144,12 +139,7 @@ class Game:
                     self.board.capture(origin, dest)
                     self.board.removePiece(dest_piece, self.opponent)
                 origin_piece.updateLocation(dest_index)
-                if isinstance(origin_piece, Notes) or isinstance(origin_piece, Governanace):
-                    origin_piece.updateMoves(self.board.getAllPieceLocations())
-                elif isinstance(origin_piece, Drive):
-                    origin_piece.updateMoves(self.board.getAllMoves(self.opponent), self.board.getActivePieceLocations(self.current))
-                else:
-                    origin_piece.updateMoves()
+                self.updatePieceMoves(origin_piece)
                 ret_value = self.check_for_checks(origin_piece)
                 if ret_value == 'checkmate':
                     raise GameEnd("{} player wins.  Checkmate.".format(self.current))
@@ -225,6 +215,8 @@ class Game:
         return False
 
     def isPinned(self, piece, dest_index):
+        if isinstance(piece, Drive):
+            return False
         current_king = self.board.getPlayerDrive(self.current)
         origin_index = piece.getIndex()
         piece.updateLocation(dest_index)
@@ -250,6 +242,15 @@ class Game:
 
     def refreshCheck(self):
         self.is_check[self.current] = (False, list())
+
+    def updatePieceMoves(self, piece):
+        if isinstance(piece, Notes) or isinstance(piece, Governanace):
+            piece.updateMoves(self.board.getAllPieceLocations())
+        elif isinstance(piece, Drive):
+            piece.updateMoves(self.board.getAllMoves(self.opponent),
+                              self.board.getActivePieceLocations(self.current))
+        else:
+            piece.updateMoves()
 
 
 
