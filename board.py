@@ -40,7 +40,7 @@ class Board:
 
     def _initBoard(self):
         """
-        Method to initialize the board with current player pieces at thier locations.
+        Method to initialize the board with current player pieces at their locations.
 
         Returns:
             Matrix: A 5x5 matrix representing the game board.

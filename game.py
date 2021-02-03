@@ -180,7 +180,7 @@ class Game:
             current_captured = self.board.getUpperPlayer().getCaptured()
             current_active = self.board.getUpperPlayer().getPieces()
             promotion_zone = 0
-            piece_type = piece_type.upper()\
+            piece_type = piece_type.upper()
         # If current piece type is not in captured list then checks if the promoted piece type is in captured list.
         piece_type = piece_type if piece_type in current_captured else '+' + piece_type
         if piece_type not in current_captured:

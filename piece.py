@@ -1,5 +1,5 @@
 import abc
-#Check bounds is a method that checks if a given index is in bounds of the board
+# Check bounds is a method that checks if a given index is in bounds of the board
 from utils import checkBounds
 from board import BOARD_SIZE
 

@@ -90,8 +90,6 @@ def printCheck(check_tuple, current_player):
         for i in check_tuple[1]:
             print(i)
 
-
-
 def main():
     """
     Main function to read terminal input
