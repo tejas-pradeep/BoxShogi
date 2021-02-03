@@ -5,12 +5,22 @@ from exceptions import *
 
 
 def game(game_mode='i', file_input=None):
+    """
+    Method runs the game. It calls executeTurn with implements the current player's turn.
+    The method also checks for and handle all win conditions.
+    The game runs till one of the end conditions is reached.
+
+    Args:
+        game_mode (str): The game mode, either 'i' for interactive or 'f' fro file.
+        file_input (dict): Dictionary that contains piece_locations, upper_captured, lower_captured, and moves from an input file.
+            (default is None)
+    """
     game = Game(game_mode, file_input)
     if game_mode == 'i':
         while True:
             try:
                 showBoard(game)
-                isCheck(game.get_check_moves(), game.getCurrentPlayer())
+                printCheck(game.get_check_moves(), game.getCurrentPlayer())
                 command = input(game.current + ">")
                 print("{} player action: {}".format(game.current, command))
                 if game.isPlayerinCheck():
@@ -23,6 +33,7 @@ def game(game_mode='i', file_input=None):
                 print("\nWhat went wrong: {}".format(str(e)))
                 quit()
             except GameEnd as e:
+                # GameEnd is thrown when the game ends with a checkmate or a tie
                 print(e)
             except FileParseException as e:
                 print(e)
@@ -50,20 +61,28 @@ def game(game_mode='i', file_input=None):
                 quit()
         print("{} player action: {}".format(game.getPreviousPlayer(), last_command))
         showBoard(game)
-        isCheck(game.get_check_moves(), game.getCurrentPlayer())
+        printCheck(game.get_check_moves(), game.getCurrentPlayer())
         print("{}>".format(game.getCurrentPlayer()))
         quit()
 
 def showBoard(game):
+    """
+    Method prints the current board state, and the pieces captured by each player.
+
+    Args:
+        game (Game): Game object that contains the current game state.
+    """
     print(game.board)
     print("Captures UPPER: {}".format(" " .join(game.board.upper_captured)))
     print("Captures lower: {}\n".format(' '.join(game.board.lower_captured)))
 
-def isCheck(check_tuple, current_player):
+def printCheck(check_tuple, current_player):
     """
-    Method check tuple prints message and available moves if current player is in check.
-    :param check_tuple: IS a tuple containing a boolean at index 0, which indicates weather the current player is in check.
-    And a list at index 1 containing possible moves.
+    Method prints message and available moves if current player is in check.
+
+    Args:
+        check_tuple (tuple): A tuple that contains a boolean weather player is in check and a list of possible moves
+        current_player (str): A string that represents the current player, either 'lower' or 'UPPER'
     """
     if check_tuple[0]:
         print("{} player is in check!".format(current_player))
@@ -76,14 +95,15 @@ def isCheck(check_tuple, current_player):
 def main():
     """
     Main function to read terminal input
+    Calls method parseTestCase() from utils that takes in file path and returns a dictionary of the file data.
     """
-    # game('f', parseTestCase('test_cases/promoteLeavingZone.in'))
+    game('f', parseTestCase('test_cases/promotedGovernanceMoves.in'))
     # game('i')
-    if sys.argv[1] == '-f':
-        input = parseTestCase(sys.argv[2])
-        game('f', input)
-    if sys.argv[1] == '-i':
-        game('i')
+    # if sys.argv[1] == '-f':
+    #     input = parseTestCase(sys.argv[2])
+    #     game('f', input)
+    # if sys.argv[1] == '-i':
+    #     game('i')
 
 
 if __name__ == "__main__":

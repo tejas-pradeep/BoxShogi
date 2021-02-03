@@ -1,13 +1,31 @@
 from board import Board
 from utils import *
 from exceptions import *
-from piece import Piece, Preview, Notes, Governanace, Drive
+from piece import Piece, Preview, Notes, Governanace, Drive, Shield
 
 class Game:
+    """
+    Game class represents the game state. All the game's moving parts occur through this class.
+
+    Attributes:
+        board (Board): The current game board.
+        current (str): The current active player.
+        opponent (str): The current player's opponent.
+        num_turns (int): The number of turns that have occurred. A turn is an action done by both players.
+        is_check (Mapping[str -> (boolean, list)]): A mapping from player_type(str) to a
+            tuple that contains weather the player is in check, and a list of available moves.
+        current_action (str): A string representing the current action being executed, either 'move' or 'drop'
+    """
     def __init__(self, game_mode='i', file_input=None):
         """
-        Game mode i for interactive and f for file
+        Initialize all the attributes with its start state values.
 
+        Args:
+            self (Game): Current game object accessing the method
+            game_mode (str): Indicates either interactive mode or File mode.
+                (default value 'i')
+            file_input (dict): Dictionary that contains piece_locations, upper_captured, lower_captured, and moves from an input file.
+            (default is None)
         """
         self.board = Board(game_mode, file_input)
         self.current = 'lower'
@@ -16,12 +34,30 @@ class Game:
         self.is_check = {'lower': (False, list()), "UPPER": (False, list())}
         self.current_action = 'move'
 
-    def getCurrentPlayer(self):
+    def getCurrentPlayer(self) -> str:
+        """
+        Method returns the current active player.
+
+        Returns:
+            str: Current active player.
+        """
         return self.current
     def getPreviousPlayer(self):
+        """
+        Method returns the opponent of the current player, ie the other player.
+
+        Returns:
+            str: The other player.
+        """
         return self.opponent
 
     def get_check_moves(self):
+        """
+        Method returns the is_check value for the current player.
+
+        Return:
+            (bool, list): A boolean representing if current player is in check, A list containing the available moves
+        """
         return self.is_check[self.getCurrentPlayer()]
 
     def executeTurn(self, inst):
@@ -30,8 +66,6 @@ class Game:
         :param inst: instruction from command line input
         :throws: GameEnd when the game ends with the desired message.
         """
-        if self.num_turns >= 400:
-            raise GameEnd("Tie game. Too many moves")
         cmd, origin, dest, promote = inst
         self.current_action = cmd
         if cmd == 'move':
@@ -41,8 +75,8 @@ class Game:
             if not promote:
                 self.handle_move(origin, dest)
             else:
-                if isinstance(self.board.getPiece(origin), Drive):
-                    raise MoveException("You tired to promote the drive")
+                if isinstance(self.board.getPiece(origin), Drive) or isinstance(self.board.getPiece(origin), Shield):
+                    raise MoveException("You tired to promote a piece that cannot be promoted.")
                 if not self.checkValidPromotion(origin, dest):
                     raise MoveException("You added in the promote flag when the move {} to {} does not have a promotion".format(origin, dest))
                 self.handle_move(origin, dest)
@@ -180,7 +214,9 @@ class Game:
         else:
             self.current = "lower"
             self.opponent = 'UPPER'
-        self.num_turns += 1
+            self.num_turns += 1
+        if self.num_turns >= 200:
+            raise GameEnd("Tie game. Too many moves")
 
     def isPlayerinCheck(self):
         return self.is_check[self.current][0]

@@ -119,8 +119,9 @@ class Notes(Piece):
             directions = [-1, 0, 1]
             for i in directions:
                 for j in directions:
-                    if not (i == 0 and j == 0) and checkBounds(self.row + i) and checkBounds(self.col + i):
-                        moves.add((self.col + i, self.row + j))
+                    if i == j == 0 or not checkBounds(self.col + i) or not checkBounds(self.row + j):
+                        continue
+                    moves.add((self.col + i, self.row + j))
         moves = list(moves)
         self.moves = moves
 
@@ -176,8 +177,9 @@ class Governanace(Piece):
             directions = [-1, 0, 1]
             for i in directions:
                 for j in directions:
-                    if not (i == 0 and j == 0) and checkBounds(self.row + i) and checkBounds(self.col + i):
-                        moves.add((self.col + i, self.row + j))
+                    if i == j == 0 or not checkBounds(self.col + i) or not checkBounds(self.row + j):
+                        continue
+                    moves.add((self.col + i, self.row + j))
         self.moves = list(moves)
 
     def getMoves(self):
@@ -235,8 +237,8 @@ class Relay(Piece):
             banned_moves = [(self.col + 1, self.row + backwards), (self.col - 1, self.row + backwards)]
             for i in directions:
                 for j in directions:
-                    if i == j == 0 or not checkBounds(self.col + i) or not checkBounds(self.row + j) or (
-                    self.col + i, self.row + j) in banned_moves:
+                    if i == j == 0 or not checkBounds(self.col + i) or not checkBounds(self.row + j) or \
+                            (self.col + i, self.row + j) in banned_moves:
                         continue
                     moves.add((self.col + i, self.row + j))
         self.moves = list(moves)
@@ -259,11 +261,14 @@ class Preview(Piece):
         if self.isPromote:
             moves = set()
             directions = [-1, 0, 1]
+            backwards = -1 if self.type == 'lower' else 1
+            banned_moves = [(self.col + 1, self.row + backwards), (self.col - 1, self.row + backwards)]
             for i in directions:
                 for j in directions:
-                    if i != 0 or j != 0 and 0 <= self.row + i < 5 and 0 <= self.col + i < 5:
-                        if (i, j) != (-1, -1) and (i, j) != (1, -1):
-                            moves.add((self.col + i, self.row + j))
+                    if i == j == 0 or not checkBounds(self.col + i) or not checkBounds(self.row + j) or \
+                            (self.col + i, self.row + j) in banned_moves:
+                        continue
+                    moves.add((self.col + i, self.row + j))
             self.moves = list(moves)
         else:
             forward = 1 if self.type == 'lower' else -1
