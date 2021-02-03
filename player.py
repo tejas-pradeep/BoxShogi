@@ -1,5 +1,16 @@
 from piece import Drive
 class Player:
+    """
+    Class representing a player object.
+
+    Attributes:
+        type: String representing the player type, lower or UPPER
+        pieces: List containing all active pieces of the player.
+        captured: List containing all pieces captured by the player.
+        drive: Drive piece object of the current player.
+
+    Class also has getters, setters, add and remove methods fro its various attributes as needed.
+    """
 
     def __init__(self, type):
         self.type = type
