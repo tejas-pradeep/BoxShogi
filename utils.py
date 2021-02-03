@@ -1,6 +1,6 @@
 from exceptions import PositionOutofBoundsException, MoveException
-from board import BOARD_SIZE
 
+BOARD_SIZE = 5
 def parseTestCase(path):
     """
     Utility function to help parse test cases.
