@@ -90,6 +90,7 @@ class Board:
             Shield("UPPER", (3, 4)),
             Preview("UPPER", (4, 3))
         ]
+        self.upper_player.getDrive().updateLocation((4, 4))
         self.upper_player.setPieces(upper_pieces)
 
     def initializeSpecialPieces(self):
@@ -237,10 +238,13 @@ class Board:
 
         return block_moves
 
-    def getNotesGovernanceMoves(self, player):
+    def getNotesGovernanceMoves(self, player, piece=None):
         moves = []
         for i in self.players[player].getPieces():
             if isinstance(i, Notes) or isinstance(i, Governanace):
+                # To account for captures.
+                if piece and i.getIndex() == piece.getIndex():
+                    continue
                 i.updateMoves(self.getAllPieceLocations())
                 moves.extend(i.getMoves())
         return moves

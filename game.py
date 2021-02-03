@@ -107,6 +107,7 @@ class Game:
         Method checks for illegal actions on trying to move a piece.
         Method calls util function location_to_index() that converts a square location. like a1 to its index (0, 0)
         method calls util function sameteam() which checks if the two arguments are on the same team.
+        Method calls util function checkBounds, that takes in two arguments and returns true if they both are in bounds.
 
         Args:
             origin (str): Piece origin square string. The location is a square on the board like a3.
@@ -115,26 +116,31 @@ class Game:
         Raises:
             WrongPlayerException: When player tires to move the other player's piece.
             MoveException: When players takes an illegal action when trying to move the piece.
+            GameEnd: When the game ends in a checkmate.
 
         """
         if checkBounds(origin, dest):
             origin_piece = self.board.getPiece(origin)
             dest_piece = self.board.getPiece(dest)
-
-            if origin_piece and isinstance(origin_piece, Piece):
-                if not sameTeam(origin_piece.getPlayerType(), self.current):
-                    raise WrongPlayerException("You tried to move the other player's piece.")
+            # Checking for illegal actions when player tries to get piece at origin.
+            if not origin_piece:
+                raise MoveException("No piece at origin square {}".format(origin))
+            elif not sameTeam(origin_piece.getPlayerType(), self.current):
+                raise WrongPlayerException("You tried to move the other player's piece.")
+            else:
                 self.updatePieceMoves(origin_piece)
                 origin_moves = origin_piece.getMoves()
                 dest_index = location_to_index(dest)
+                # Checking for illegal actions when player moves the piece to an illegal location.
                 if dest_index not in origin_moves:
                     raise MoveException("You tried to move a piece to a location it cant reach on this turn.")
                 if self.isPinned(origin_piece, dest_index):
                     raise MoveException("You tried to move a pinned piece.")
+                if sameTeam(origin_piece.getPlayerType(), dest_piece.getPlayerType()):
+                    raise MoveException("Both origin and destination is owned by you")
+                # Move vs Capture
                 if dest_piece is None:
                     self.board.move(origin, dest)
-                elif sameTeam(origin_piece.getPlayerType(), dest_piece.getPlayerType()):
-                    raise MoveException("Both origin and destination is owned by you")
                 else:
                     self.board.capture(origin, dest)
                     self.board.removePiece(dest_piece, self.opponent)
@@ -143,12 +149,24 @@ class Game:
                 ret_value = self.check_for_checks(origin_piece)
                 if ret_value == 'checkmate':
                     raise GameEnd("{} player wins.  Checkmate.".format(self.current))
-            else:
-                raise MoveException("No piece at origin square {}".format(origin))
         else:
             raise MoveException("Either origin or destination is out of bounds")
 
     def handleDrop(self, piece_type, dest):
+        """
+        Method to drop a piece to a destination square.
+        Checks of illegal action when dropping the piece.
+        Method calls util function location_to_index() that converts a square location. like a1 to its index (0, 0)
+
+        Args:
+            piece_type (str): The type of piece denoted by [d, r, s, n, g, p].
+            dest (str): Destination square string. Example: a3
+
+        Raises:
+            DropException: Exception thrown when a piece is dropped onto an illegal square.
+            GameEnd: When a drop move results in a checkmate.
+
+        """
         dest_index = location_to_index(dest)
         dest_piece = self.board.getPiece(dest)
         if dest_piece:
@@ -220,7 +238,7 @@ class Game:
         current_king = self.board.getPlayerDrive(self.current)
         origin_index = piece.getIndex()
         piece.updateLocation(dest_index)
-        possible_checks = self.board.getNotesGovernanceMoves(self.opponent)
+        possible_checks = self.board.getNotesGovernanceMoves(self.opponent, piece)
         piece.updateLocation(origin_index)
         if current_king.getIndex() in possible_checks:
             return True
