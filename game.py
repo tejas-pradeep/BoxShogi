@@ -75,7 +75,10 @@ class Game:
             if not promote:
                 self.handle_move(origin, dest)
             else:
-                if isinstance(self.board.getPiece(origin), Drive) or isinstance(self.board.getPiece(origin), Shield):
+                piece = self.board.getPiece(origin)
+                if piece.isPromote:
+                    raise MoveException("You tried to promote a piece that is already promoted.")
+                if isinstance(piece, Drive) or isinstance(piece, Shield):
                     raise MoveException("You tired to promote a piece that cannot be promoted.")
                 if not self.checkValidPromotion(origin, dest):
                     raise MoveException("You added in the promote flag when the move {} to {} does not have a promotion".format(origin, dest))
