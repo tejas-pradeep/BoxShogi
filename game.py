@@ -91,6 +91,7 @@ class Game:
                     raise MoveException("You tired to promote a piece that cannot be promoted.")
                 if not self.checkValidPromotion(origin, dest):
                     raise MoveException("You added in the promote flag when the move {} to {} does not have a promotion".format(origin, dest))
+                piece.promote()
             self.handleMove(origin, dest)
         elif cmd == 'drop':
             if promote:
