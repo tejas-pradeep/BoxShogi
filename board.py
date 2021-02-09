@@ -275,6 +275,7 @@ class Board:
                 i.updateMoves(self.getAllPieceLocations(self.players[opponent_player].getDrive()))
             else:
                 i.updateMoves()
+            self.updateSupportPieceMoves(i)
             moves.update(i.getMoves())
         return list(moves)
 
@@ -307,6 +308,7 @@ class Board:
             if isinstance(i, Drive):
                 continue
             i.updateMoves()
+            self.updateSupportPieceMoves(i)
             for j in i.getMoves():
                 if j == piece_location:
                     capture_moves.add("move {} {}".format(index_to_location(i.getIndex()), index_to_location(j)))
@@ -383,8 +385,44 @@ class Board:
                 if piece and i.getIndex() == piece.getIndex():
                     continue
                 i.updateMoves(self.getAllPieceLocations())
+                self.updateSupportPieceMoves(i)
                 moves.extend(i.getMoves())
         return moves
+
+    def updateSupportPieceMoves(self, piece, dropped_piece=None):
+        """
+        Method updates a passed in piece's moves.
+
+        Args:
+            piece (Piece): The piece whose moves are to be updated.
+        """
+        # Three cases since Notes and Governance need to account for blocks
+        support_location = piece.getIndex()
+        backwards = -1 if piece.getPlayerType() == 'lower' else 1
+        support_location = (support_location[0], support_location[1] + backwards)
+        if checkBounds(support_location[0]) and checkBounds(support_location[1]):
+            support_piece = self._board[support_location[0]][support_location[1]]
+            if dropped_piece:
+                support_location = piece.getIndex()
+                dropped_piece.updateLocation(support_location)
+                support_piece = dropped_piece
+            if isinstance(support_piece, Piece) and support_piece.getPlayerType() == piece.getPlayerType():
+                support_piece_orig_index = support_piece.getIndex()
+                support_piece.updateLocation(piece.getIndex())
+                if isinstance(support_piece, Notes) or isinstance(support_piece, Governanace):
+                    support_piece.updateMoves(self.getAllPieceLocations())
+                #  Drive needs to account for checks.
+                elif isinstance(support_piece, Drive):
+                    support_piece.updateMoves(list(),
+                                      self.getActivePieceLocations(piece.getPlayerType()))
+                else:
+                    support_piece.updateMoves()
+                support_move_list = support_piece.getMoves()
+                piece.updateSupportMoves(support_move_list)
+                if not dropped_piece:
+                    support_piece.updateLocation(support_piece_orig_index)
+
+
 
     def __repr__(self):
         return self._stringifyBoard()

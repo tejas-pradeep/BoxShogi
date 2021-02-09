@@ -29,6 +29,7 @@ def game(game_mode='i', file_input=None):
                 instruction = getMove(command)
                 game.executeTurn(instruction)
             except (MoveException, WrongPlayerException, PositionOutofBoundsException, DropException) as e:
+
                 print("\n{} player wins.  Illegal move".format(game.getPreviousPlayer()))
                 print("\nWhat went wrong: {}".format(str(e)))
                 quit()
@@ -96,11 +97,12 @@ def main():
     Calls method parseTestCase() from utils that takes in file path and returns a dictionary of the file data.
     """
     # game('f', parseTestCase("test_cases/basicCheck.in"))
-    if sys.argv[1] == '-f':
-        input = parseTestCase(sys.argv[2])
-        game('f', input)
-    if sys.argv[1] == '-i':
-        game('i')
+    game('i')
+    # if sys.argv[1] == '-f':
+    #     input = parseTestCase(sys.argv[2])
+    #     game('f', input)
+    # if sys.argv[1] == '-i':
+    #     game('i')
 
 
 if __name__ == "__main__":

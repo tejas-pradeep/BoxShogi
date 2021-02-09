@@ -169,8 +169,6 @@ class Game:
         """
         dest_index = location_to_index(dest)
         dest_piece = self.board.getPiece(dest)
-        if dest_piece:
-            raise DropException("You tried to drop a piece to a location with another piece")
         if self.current == 'lower':
            current_captured = self.board.getLowerPlayer().getCaptured()
            current_active = self.board.getLowerPlayer().getPieces()
@@ -194,12 +192,18 @@ class Game:
                 raise DropException("You tried to drop a preview ont a spot that results in promotion.")
 
         piece = Board.createPieceFromName(piece_type[-1], self.current, dest_index)
-        current_active.append(piece)
-        ret_value = self.check_for_checks(piece)
-        self.board.drop(piece, dest_index)
-        current_captured.remove(piece_type)
-        if ret_value == 'checkmate':
-            raise GameEnd("{} player wins.  Checkmate.".format(self.current))
+        if dest_piece:
+            if dest_piece.getPlayerType() == self.current:
+                self.board.updateSupportPieceMoves(dest_piece, piece)
+            else:
+                raise DropException("")
+        else:
+            current_active.append(piece)
+            ret_value = self.check_for_checks(piece)
+            self.board.drop(piece, dest_index)
+            current_captured.remove(piece_type)
+            if ret_value == 'checkmate':
+                raise GameEnd("{} player wins.  Checkmate.".format(self.current))
 
     def check_for_checks(self, origin_piece):
         """
@@ -340,6 +344,7 @@ class Game:
                               self.board.getActivePieceLocations(self.current))
         else:
             piece.updateMoves()
+        self.board.updateSupportPieceMoves(piece)
 
 
 

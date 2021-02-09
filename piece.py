@@ -91,6 +91,10 @@ class Piece(metaclass=abc.ABCMeta):
         self.col = new_location[0]
         self.row = new_location[1]
 
+    def updateSupportMoves(self, supporting_move_list):
+        self.moves += supporting_move_list
+
+
 
 class Drive(Piece):
     """
